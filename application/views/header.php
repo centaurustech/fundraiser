@@ -76,6 +76,10 @@
 			});
 		}
 
+		function test(){
+			
+		}
+
 		function show_login_form(){
 			$("#register_form_wrapper").hide();
 			$("#login_form_wrapper").show();
