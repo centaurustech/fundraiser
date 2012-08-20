@@ -9,7 +9,7 @@
 		<label for="register_form_password">Password<input type="password" name="password" id="register_form_password" class="required"></label>
 		<label for="register_form_confirmpassword">Confirm Password<input type="password" name="confirmpassword" id="register_form_confirmpassword" class="required"></label>
 		<label for="register_form_agree"><input type="checkbox" name="agree" id="register_form_agree" class="required">By creating this account, I agree STAfund's <a href="#">Terms of Use</a></label>
-		<a href="#">I Already Have an Account</a>
+		<a href="#" onclick="show_login_form()">I Already Have an Account</a>
 		<button onclick="register()" >Save and Continue</button>
 	</form>
 </div>

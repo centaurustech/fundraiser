@@ -10,11 +10,18 @@
 		$(document).ready(function(){
 			$(".close_modal_button").on('click',function(){
 				hide_form_wrapper();
+				var validator
+				
+				validator = $("#login_form").validate();
+				validator.resetForm();
+				validator = $("#register_form").validate();
+				validator.resetForm();
 			});
 		});
 
 		function login(){
-			
+			//console.log('login');
+			//console.log($("#login_form"));
 			$("#login_form").validate({
 				rules: {
 					login_form_email: {required: true,email: true}
@@ -25,21 +32,22 @@
 					,login_form_password: "Please enter password"
 				},
 				submitHandler: function(form){
+					console.log($(form).serialize());
 					$.ajax({
 						url: "/auth/login"
 						,type: "post"
-						
 						,data: $(form).serialize()
 						,success: function(data){
 							console.log(data);
-
 						}
 					});
 				}
 			});
+			//console.log('login_end');
 		}
 
 		function register(){
+			console.log('register');
 			$("#register_form").validate({
 				rules: {
 					register_form_firstname: {required: true,minlength: 2}
@@ -69,10 +77,12 @@
 		}
 
 		function show_login_form(){
+			$("#register_form_wrapper").hide();
 			$("#login_form_wrapper").show();
 		}
 
 		function show_register_form(){
+			$("#login_form_wrapper").hide();
 			$("#register_form_wrapper").show();
 		}
 
