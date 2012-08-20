@@ -77,7 +77,7 @@
 		}
 
 		function test(){
-			
+			console.log();
 		}
 
 		function show_login_form(){
