@@ -6,6 +6,16 @@
 	<link rel="stylesheet" href="/css/main.css">
 	<script type="text/javascript" src="/js/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+
+<?php
+	$CI =& get_instance();
+	$CI->load->library('facebook/richfacebook');
+	$args['next'] = "http://fundraiser.nteractivemarketing.com/facebook/logout_callback";
+	$facebook_logout_url = $CI->richfacebook->getLogoutUrl($args);
+
+?>
+
+
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$(".close_modal_button").on('click',function(){
@@ -76,9 +86,6 @@
 			});
 		}
 
-		function test(){
-			console.log();
-		}
 
 		function show_login_form(){
 			$("#register_form_wrapper").hide();
@@ -102,6 +109,41 @@
 			$("#errors_wrapper").html($("#errors_wrapper .close_errors")).hide();
 		}
 
+		function fb_login(){
+			var w = 550, h = 400;
+			var top = (screen.height - h)/2, left = (screen.width - w)/2;
+			if(top < 0) top = 0;
+			if(left < 0) left = 0;
+
+			var params = "width=" + w + ",height=" + h + ",resizable=yes,scrollbars=yes,status=yes,top=" + top + ",left=" + left;
+			fbpopup = window.open("<?=base_url()?>facebook/login", "Facebook", params);
+		}
+
+		function fb_logout(){
+			var w = 550, h = 400;
+			var top = (screen.height - h)/2, left = (screen.width - w)/2;
+			if(top < 0) top = 0;
+			if(left < 0) left = 0;
+
+			var params = "width=" + w + ",height=" + h + ",resizable=yes,scrollbars=yes,status=yes,top=" + top + ",left=" + left;
+			fbpopup = window.open("<?=$facebook_logout_url?>", "Facebook", params);
+		}
+
+		function fb_after_login(data){
+			console.log('fb_after_login');
+			fbpopup.close();
+			console.log(data);
+			var json = $.parseJSON(data);
+			console.log(json);
+		}
+
+		function fb_after_logout(data){
+			console.log('fb_after_logout');
+			fbpopup.close();
+			console.log(data);
+			var json = $.parseJSON(data);
+			console.log(json);
+		}
 	</script>
 </head>
 <body>
@@ -112,12 +154,16 @@
 				<li><a href=".">Home</a></li>
 				<li>
 					<?php if($this->session->userdata('user')){ ?>
+						<button onclick="fb_logout()">FACEBOOK LOGOUT</button>
 						<a href="logout">Logout</a>
 					<?php }else{ ?>
+						<button onclick="fb_login()">FACEBOOK LOGIN</button>
 						<button onclick="show_login_form()">login</button>
 					<?php } ?>
 				</li>
-				<li><button onclick="show_register_form()">Register</button></li>
+				<?php if(!$this->session->userdata('user')){ ?>
+					<li><button onclick="show_register_form()">Register</button></li>
+				<?php } ?>
 			</ul>
 		</div>
 		<div id="errors_wrapper">

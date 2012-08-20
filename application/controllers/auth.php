@@ -4,7 +4,6 @@ class Auth extends CI_Controller {
 
 	function __construct(){
 		parent::__construct();
-
 		error_reporting(E_ALL);
 	}
 
@@ -20,8 +19,8 @@ class Auth extends CI_Controller {
 		$this->load->helper('functions');
 
 		$validation = $this->validate_login_form();
-		
-		if($validation['error'] == true){
+
+		if($validation['error']){
 			error_as_json($validation['message']);
 		}else{
 			$this->session->unset_userdata('error');
@@ -31,7 +30,6 @@ class Auth extends CI_Controller {
 	}
 
 	public function register(){
-
 
 		if(!$this->input->post()){
 			show_404();
@@ -60,7 +58,8 @@ class Auth extends CI_Controller {
 
 			if($user){
 				$this->session->set_userdata('user',$user);
-				result_as_json('Registration complete. Please check email to activate account.' . json_encode($user));
+				$activation_url = $this->send_activation_email($user);
+				result_as_json('Registration complete. Please check email to activate account. ' . $activation_url);
 			}else{
 				$this->session->unset_userdata('user');
 				error_as_json('Registration error, please check all fields.' . json_encode($user));
@@ -69,22 +68,37 @@ class Auth extends CI_Controller {
 
 	}
 
-	// public function email_confirm(){
-		
-	// }
+	function facebook(){
+		$segments = $this->uri->segment_array();
+		if($this->uri->segment(3) != 'callback'){
+
+		}else{
+			// CALLBACK
+			//$this->load->library('facebook/richfacebook');
+
+		}
+
+	}
+
+
 
 	private function validate_login_form(){
-		$result['error'] = false;
-		$result['message'] = 'Authorization is successful';
-
+		
 		// if have no post data or data not valid
 		if(!$this->input->post('email') || !$this->input->post('password') || !$this->validate_auth($this->input->post('email',true),$this->input->post('password',true))){
-			$result['error'] = true;
-			$result['message'] = 'This combination of email and password not found';
-			$result['user'] = null;
-		}else{
-			$result['user'] = $this->get_user($this->input->post('email',true),$this->input->post('password',true));
+			return result(1003);
 		}
+		
+		$this->load->model('User_model','user');
+		$user = $this->user->get_user($this->input->post('email',true),$this->input->post('password',true));
+
+		if(!$this->activated($this->input->post('email',true))){
+			$result = result(1006);
+		}else{
+			$result = result(1099);
+		}
+		$result['user'] = $user;
+
 		return $result;
 	}
 
@@ -98,24 +112,26 @@ class Auth extends CI_Controller {
 		return $this->user->validate_auth($email,$password);
 	}
 
-	private function get_user($email=null,$password=null){
-		if(!$email || !$password){
+	private function activated($email=null){
+		if(!$email){
 			return false;
 		}
-		$this->load->model('User_model','user');
-		return $this->user->get_user($email,$password);
+		$result = $this->db->get_where('users',array('email'=>$email));
+		if($result->num_rows() == 1 && $result->row()->active == 1){
+			return true;
+		}
+		return false;
 	}
 
 	private function send_activation_email($user) {
-		$this->load->helper('email');
+
+		return base_url() . "email/activation?code=" . $user->activation_code;
 		
-		var_dump($user);
-
-		$subject = 'Account Activation';
-		$recipient = $user['email'];
-		$message = $user['activation_code'];
-
-		return send_email($recipient, $subject, $message);
+		//$this->load->helper('email');
+		// $subject = 'Account Activation';
+		// $recipient = $user['email'];
+		// $message = $user['activation_code'];
+		//return send_email($recipient, $subject, $message);
 	}
 
 }
