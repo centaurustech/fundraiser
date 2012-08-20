@@ -1,0 +1,57 @@
+body{
+	margin: 0px;
+	padding: 0px;
+}
+
+#session{
+	margin: 10px;
+	padding: 10px;
+	border: solid 1px #AAA;
+	background: #EEE;
+}
+
+#errors_wrapper{
+	display: none;
+	margin: 10px;
+	padding: 10px;
+	border: solid 1px #AAA;
+	background: #EEE;
+}
+
+.form_wrapper{
+	display: none;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: rgb(255,255,255);
+	width: 100%;
+	height: 100%;
+}
+
+.form_wrapper form{
+	position:relative;
+	z-index: 2;
+}
+
+.form_wrapper, .form_wrapper_bg{
+	position: absolute;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+}
+
+.op{
+	background: #EEE;
+	/* IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+	/* IE 5-7 */
+	filter: alpha(opacity=80);
+	/* Netscape */
+	-moz-opacity: 0.8;
+	/* Safari 1.x */
+	-khtml-opacity: 0.8;
+	/* Good browsers */
+	opacity: 0.8;
+}
