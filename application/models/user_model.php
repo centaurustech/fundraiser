@@ -16,10 +16,18 @@ class User_model extends CI_Model
 		return $this->db->get_where('users',array('email'=>$email,'password'=>md5($password)))->num_rows() == 1;
 	}
 
+	function is_user($email=null){
+		if(!$email){
+			return false;
+		}
+		return $this->db->get_where('users',array('email'=>$email))->num_rows() == 1;
+	}
+
 	function get_user($email=null,$password=null){
 		if(!$email || !$password){
 			return false;
 		}
+		$this->db->select(array('email','firstname','lastname','activation_code'));
 		return $this->db->get_where('users',array('email'=>$email,'password'=>md5($password)))->row();
 	}
 
@@ -49,14 +57,24 @@ class User_model extends CI_Model
 		return false;
 	}
 
-	function confirm_email($code=null){
+	function activation_email($code=null){
 		if(!$code){
-			return false;
+			return result(0);
 		}
 
-		$this->db->update('users',array('active'=>1),array('activation_code'=>$code,'active'=>'0'));
+		if($this->db->get_where('users',array('activation_code'=>$code))->num_rows() != 1){
+			return result(1202);
+		}	
 
-		return $this->db->affected_rows() == 1;
+		if($this->db->update('users',array('active'=>1),array('activation_code'=>$code,'active'=>0))){
+			return result(1299);
+		}
+
+		if($this->db->get_where('users',array('activation_code'=>$code,'active'=>'1'))->num_rows() > 0){
+			return result(1201);
+		}
+
+		return result(1203);
 	}
 
 }
