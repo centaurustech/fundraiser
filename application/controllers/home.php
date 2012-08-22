@@ -11,11 +11,6 @@ class Home extends CI_Controller {
 		$this->load->view('home',array('data'=>$this->get_data()));
 	}
 
-	public function logout(){
-		$this->session->sess_destroy();
-		redirect(base_url());
-	}
-
 	public function email(){
 		$segments = $this->uri->segment_array();
 		switch($segments[2]){
@@ -65,13 +60,11 @@ class Home extends CI_Controller {
 		$data['title'] = 'Fundaraiser';
 
 		$sess = $this->session->userdata('user');
-
-		//var_dump($sess);die();
-
-		if(!$sess || !$sess->email || !$this->user->is_user($sess->email)){
-		  	$this->session->unset_userdata('user');
-		}else{
+		
+		if($sess && $sess['email'] && $this->user->is_user($sess['email'])){
 		 	$data['user']=$sess;
+		}else{
+		  	//$this->session->unset_userdata('user');
 		}
 
 		return $data;

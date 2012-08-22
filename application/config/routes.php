@@ -47,7 +47,9 @@ $route['404_override'] = '';
 // $route['email'] 	= "home/email";
 
 
-$route['facebook/(.*)'] 	= "fb/$1";
+//$route['facebook/(.*)'] 	= "fb/$1";
+$route['profile'] 	= "profile";
+$route['profile/(.*)'] 	= "profile/$1";
 $route['auth/(.*)'] 	= "auth/$1";
 
 $route['(.*)'] 	= "home/$1";

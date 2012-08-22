@@ -1,6 +1,7 @@
 <?php $this->load->view('header',$data); ?>
 <div id="content">
-	<p>HOME</p>
-	<?php $this->load->view('content',$data); ?>
+	<p>PROFILE</p>
+	SESSION user:</br>
+	<pre><?php print_r($this->session->userdata('user')); ?></pre>
 </div>
 <?php $this->load->view('footer',$data); ?>

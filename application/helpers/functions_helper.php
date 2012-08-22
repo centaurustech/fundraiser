@@ -6,6 +6,7 @@ function json($data){
 	$CI->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
 	$CI->output->set_content_type('application/json');
 	$CI->output->set_output(json_encode($data));
+	//die();
 }
 
 function error_as_json($message,$data=null){
@@ -61,4 +62,15 @@ function result($id=0){
 	$result['message'] = $results[$id][1];
 
 	return $result;
+}
+
+function send_activation_email($user) {
+
+	return base_url() . "email/activation?code=" . $user->activation_code;
+	
+	//$this->load->helper('email');
+	// $subject = 'Account Activation';
+	// $recipient = $user['email'];
+	// $message = $user['activation_code'];
+	//return send_email($recipient, $subject, $message);
 }

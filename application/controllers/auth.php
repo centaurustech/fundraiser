@@ -11,6 +11,15 @@ class Auth extends CI_Controller {
 		show_404();
 	}
 
+	function test(){
+		echo "AUTH TEST";
+	}
+
+	public function logout(){
+		$this->session->unset_userdata('user');
+		redirect(base_url());
+	}
+
 	public function login(){
 		if(!$this->input->post()){
 			show_404();
@@ -24,8 +33,8 @@ class Auth extends CI_Controller {
 			error_as_json($validation['message']);
 		}else{
 			$this->session->unset_userdata('error');
-			$this->session->set_userdata('user',$validation['user']);
-			result_as_json($validation['message'],$validation['user']);
+			$this->session->set_userdata('user',$validation);
+			result_as_json($validation['message'],$validation);
 		}
 	}
 
@@ -58,7 +67,7 @@ class Auth extends CI_Controller {
 
 			if($user){
 				$this->session->set_userdata('user',$user);
-				$activation_url = $this->send_activation_email($user);
+				$activation_url = send_activation_email($user);
 				result_as_json('Registration complete. Please check email to activate account. ' . $activation_url);
 			}else{
 				$this->session->unset_userdata('user');
@@ -68,17 +77,117 @@ class Auth extends CI_Controller {
 
 	}
 
-	function facebook(){
-		$segments = $this->uri->segment_array();
-		if($this->uri->segment(3) != 'callback'){
 
-		}else{
-			// CALLBACK
-			//$this->load->library('facebook/richfacebook');
 
+	function facebook_login($data = false){
+		$this->load->library('facebook/richfacebook');
+		redirect($this->richfacebook->getLoginUrl(array('display'=>'popup','scope'=>$this->config->item('facebook_default_scope'),'redirect_uri'=>$this->config->item('facebook_callback'))));
+	}
+
+	function facebook_callback(){
+		$this->load->library('facebook/richfacebook');
+
+		if($this->input->get('error')){
+			$data = array('error'=>true,'action'=>'login','message'=>$this->input->get('error_description'));
+			//var_dump($data);
+
+			$this->load->view('facebook_callback',array("data"=>$data));	
+			exit;	
+		}
+		//die();
+
+		$eat = $this->richfacebook->getExtendedAccessToken();
+		// if extended access token error
+		if(false == $eat){
+			$this->load->view('facebook_callback',array('data'=>array('error'=>true,'message'=>'An error occurred while receiving long-term access token','action'=>'login','get'=>$this->input->get())));
+			exit;
 		}
 
+	    $me = $this->richfacebook->api('/me');
+
+		$error = is_array($me) ? $me : json_decode($me, true);
+	    if(is_array($error) && isset($error['error'])) {
+	    	$this->load->view('facebook_callback',array('data'=>array('error'=>'An error occurred while receiving user data','action'=>'login','get'=>$this->input->get())));
+			exit;
+	    }
+
+		$avatar = 'https://graph.facebook.com/' . $me['id'] . '/picture?type=small&access_token=' . $this->richfacebook->getAccessToken();
+
+		$data = array(
+			'error'=>false
+			,'action'=>'login'
+			,'facebook_access_token'=>$this->richfacebook->getAccessToken()
+			,'avatar'=>$avatar
+			,'firstname'=>$me['first_name']
+			,'lastname'=>$me['last_name']
+			,'email'=>$me['email']
+			//,'get'=>$this->input->get()
+		);
+	
+		$this->load->model('User_model','user');
+		$user = $this->user->register_facebook($data["firstname"],$data["lastname"],$data["email"],$data['token'],$data['avatar']);
+		$this->session->set_userdata('user',$this->user->get_facebook_user($data['token']));
+
+		$data['user'] = $user;
+
+		$this->load->view('facebook_callback',array("data"=>$data));
 	}
+
+	function facebook_logout_callback(){
+		// $this->session->unset_userdata('user');
+
+		$data->data = array('action'=>'logout');
+		$this->load->view('facebook_callback',$data);
+	}
+
+	function get_facebook_user_by_token(){
+		if(!$this->input->post('access_token')){
+			error_as_json('Access token required');
+		}
+		$this->load->library('facebook/richfacebook');
+		$eat = $this->richfacebook->getExtendedAccessToken($this->input->post('access_token'));
+
+		try {
+			$me = $this->richfacebook->api('/me');
+
+			if(isset($eat['access_token'])){
+				$this->load->model('User_model','user');
+				$user = $this->user->get_facebook_user($eat['access_token']);
+			}
+
+			if(!$user){
+				$user = array(
+					'error'=>false
+					,'action'=>'login'
+					,'facebook_access_token'=>$this->richfacebook->getAccessToken()
+					,'avatar'=>'https://graph.facebook.com/' . $me['id'] . '/picture?type=small&access_token=' . $this->richfacebook->getAccessToken()
+					,'firstname'=>$me['first_name']
+					,'lastname'=>$me['last_name']
+					,'email'=>$me['email']
+				);
+			}
+
+			result_as_json('',$user);
+			
+		} catch (Exception $e) {
+			error_as_json('Access token not valid');
+		}
+	}
+
+	private function facebook_register($firstname,$lastname,$email,$password){
+		$this->load->model('User_model','user');
+		$user = $this->user->register($firstname,$lastname,$email,$password);
+		if($user){
+			$this->session->set_userdata('user',$user);
+			$activation_url = send_activation_email($user);
+			result_as_json('Registration complete. Please check email to activate account. ' . $activation_url);
+		}else{
+			$this->session->unset_userdata('user');
+			error_as_json('Registration error, please check all fields.' . json_encode($user));
+		}
+	}
+
+
 
 
 
@@ -97,8 +206,7 @@ class Auth extends CI_Controller {
 		}else{
 			$result = result(1099);
 		}
-		$result['user'] = $user;
-
+		$result = array_merge($result,$user);
 		return $result;
 	}
 
@@ -121,17 +229,6 @@ class Auth extends CI_Controller {
 			return true;
 		}
 		return false;
-	}
-
-	private function send_activation_email($user) {
-
-		return base_url() . "email/activation?code=" . $user->activation_code;
-		
-		//$this->load->helper('email');
-		// $subject = 'Account Activation';
-		// $recipient = $user['email'];
-		// $message = $user['activation_code'];
-		//return send_email($recipient, $subject, $message);
 	}
 
 }
