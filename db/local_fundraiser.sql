@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Авг 22 2012 г., 14:25
+-- Время создания: Авг 22 2012 г., 14:45
 -- Версия сервера: 5.5.24
 -- Версия PHP: 5.3.10-1ubuntu3.2
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- База данных: `local_fundraiser`
+-- База данных: `fundraiser`
 --
 
 -- --------------------------------------------------------
@@ -46,16 +46,16 @@ CREATE TABLE IF NOT EXISTS `ad` (
 
 INSERT INTO `ad` (`id`, `user_id`, `id_fundraiser`, `need_raise`, `total_cost`, `still_need_raise`, `date`, `description`, `meaning`, `create_date`) VALUES
 (1, 0, 0, 87, 786, 0, '0000-00-00', 'jnllkj', NULL, '0000-00-00 00:00:00'),
-(2, 0, 3, 435, 324, 435, '2012-08-17', 'dfg', NULL, '2012-08-20 16:05:25'),
-(3, 0, 1, 3, 34, 3, '2012-08-14', 'вап', 'выа', '2012-08-21 08:22:44'),
-(4, 0, 1, 3, 34, 3, '2012-08-14', 'вап', 'выа', '2012-08-21 08:23:16'),
-(5, 0, 1, 31, 34, 31, '2012-08-23', 'авы', 'ыва', '2012-08-21 08:31:45'),
-(6, 0, 1, 3, 43, 3, '2012-08-23', 'sdf', 'fds', '2012-08-21 08:44:54'),
-(7, 0, 1, 43, 324, 43, '2012-08-24', 'авп', 'авп', '2012-08-21 08:49:25'),
-(8, 0, 1, 43, 767, 43, '2012-08-22', 'sdf', 'sf', '2012-08-21 09:05:12'),
-(9, 0, 2, 47, 324, 47, '2012-08-23', 'hh', 'hg', '2012-08-21 10:19:59'),
-(10, 0, 2, 324, 3234, 324, '2012-08-22', 'fdgsdf', 'fsddsf', '2012-08-21 11:12:17'),
-(11, 2, 1, 32, 44, 32, '2012-08-23', 'sefre', 'erte', '2012-08-21 11:13:29');
+(2, 0, 3, 435, 324, 435, '2012-08-17', 'dfg', NULL, '2012-08-20 13:05:25'),
+(3, 0, 1, 3, 34, 3, '2012-08-14', 'вап', 'выа', '2012-08-21 05:22:44'),
+(4, 0, 1, 3, 34, 3, '2012-08-14', 'вап', 'выа', '2012-08-21 05:23:16'),
+(5, 0, 1, 31, 34, 31, '2012-08-23', 'авы', 'ыва', '2012-08-21 05:31:45'),
+(6, 0, 1, 3, 43, 3, '2012-08-23', 'sdf', 'fds', '2012-08-21 05:44:54'),
+(7, 0, 1, 43, 324, 43, '2012-08-24', 'авп', 'авп', '2012-08-21 05:49:25'),
+(8, 0, 1, 43, 767, 43, '2012-08-22', 'sdf', 'sf', '2012-08-21 06:05:12'),
+(9, 0, 2, 47, 324, 47, '2012-08-23', 'hh', 'hg', '2012-08-21 07:19:59'),
+(10, 0, 2, 324, 3234, 324, '2012-08-22', 'fdgsdf', 'fsddsf', '2012-08-21 08:12:17'),
+(11, 2, 1, 32, 44, 32, '2012-08-23', 'sefre', 'erte', '2012-08-21 08:13:29');
 
 -- --------------------------------------------------------
 
@@ -100,7 +100,17 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('f6cec40b5413d52df5ac1409f3bb82c9', '127.0.0.1', 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:14.0) Gecko/20100101 Firefox/14.0.1', 1345626511, 'a:1:{s:9:"user_data";s:0:"";}');
+('280c1815b0e7e5bbc9dce1c8ac882492', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345630706, 'a:2:{s:9:"user_data";s:0:"";s:4:"user";b:0;}'),
+('3669213205fd30c8b4c20898a77c4bab', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345632755, 'a:1:{s:9:"user_data";s:0:"";}'),
+('43241bad49bc98ea8788155697be8f59', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345633707, 'a:2:{s:9:"user_data";s:0:"";s:4:"user";a:8:{s:8:"password";b:1;s:5:"email";s:20:"test230977@gmail.com";s:9:"firstname";s:4:"Ivan";s:8:"lastname";s:6:"Ivanov";s:6:"avatar";s:186:"https://graph.facebook.com/100003261707271/picture?type=small&access_token=AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:21:"facebook_access_token";s:111:"AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:15:"activation_code";s:32:"f5b342e7146e07089acb1d39f54619cb";s:6:"active";s:1:"1";}}'),
+('693c8616735bca9cc7cdd8d80d7f0a72', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345630137, 'a:2:{s:9:"user_data";s:0:"";s:4:"user";b:0;}'),
+('693d96ae0017f0507c7e8b8492f89827', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345631593, 'a:1:{s:9:"user_data";s:0:"";}'),
+('787c63a93a49355056e2a114bbc9c463', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345632440, 'a:2:{s:9:"user_data";s:0:"";s:4:"user";a:8:{s:5:"email";s:20:"test230977@gmail.com";s:8:"password";b:1;s:9:"firstname";s:4:"Ivan";s:8:"lastname";s:6:"Ivanov";s:21:"facebook_access_token";s:111:"AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:6:"avatar";s:186:"https://graph.facebook.com/100003261707271/picture?type=small&access_token=AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:15:"activation_code";s:32:"f5b342e7146e07089acb1d39f54619cb";s:6:"active";s:1:"0";}}'),
+('8bd1051419734fdd16e2d5a56fbe9224', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345631546, 'a:2:{s:9:"user_data";s:0:"";s:4:"user";a:10:{s:8:"password";b:0;s:5:"email";s:20:"test230977@gmail.com";s:9:"firstname";s:4:"Ivan";s:8:"lastname";s:6:"Ivanov";s:6:"avatar";s:186:"https://graph.facebook.com/100003261707271/picture?type=small&access_token=AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:21:"facebook_access_token";s:111:"AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:15:"activation_code";s:32:"f5b342e7146e07089acb1d39f54619cb";s:6:"active";s:1:"0";s:5:"error";b:0;s:6:"action";s:5:"login";}}'),
+('ac4a2637b8e51e4e435a86afb50295d4', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345630314, 'a:2:{s:9:"user_data";s:0:"";s:4:"user";b:0;}'),
+('aff8c5d119a08a0262a46b932224ac61', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345631455, 'a:2:{s:9:"user_data";s:0:"";s:4:"user";a:10:{s:8:"password";b:0;s:5:"email";s:20:"test230977@gmail.com";s:9:"firstname";s:4:"Ivan";s:8:"lastname";s:6:"Ivanov";s:6:"avatar";s:186:"https://graph.facebook.com/100003261707271/picture?type=small&access_token=AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:21:"facebook_access_token";s:111:"AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:15:"activation_code";s:32:"f5b342e7146e07089acb1d39f54619cb";s:6:"active";s:1:"0";s:5:"error";b:0;s:6:"action";s:5:"login";}}'),
+('d0c483920753a9d4df1887f3c1063d3a', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345631000, 'a:1:{s:9:"user_data";s:0:"";}'),
+('d33e9b1327ea89d15d6b2d2edbbbf5b8', '127.0.0.1', 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/535.19 (KHTML, like Gecko) Ubuntu/12.04 Chromium/18.0.1025.168 Chrome/18.0.102', 1345633010, 'a:2:{s:9:"user_data";s:0:"";s:4:"user";a:8:{s:8:"password";b:1;s:5:"email";s:20:"test230977@gmail.com";s:9:"firstname";s:4:"Ivan";s:8:"lastname";s:6:"Ivanov";s:6:"avatar";s:186:"https://graph.facebook.com/100003261707271/picture?type=small&access_token=AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:21:"facebook_access_token";s:111:"AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD";s:15:"activation_code";s:32:"f5b342e7146e07089acb1d39f54619cb";s:6:"active";s:1:"1";}}');
 
 -- --------------------------------------------------------
 
@@ -127,26 +137,22 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL,
+  `facebook_access_token` varchar(255) NOT NULL,
+  `avatar` varchar(255) NOT NULL,
   `activation_code` varchar(255) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `firstname`, `lastname`, `activation_code`, `active`) VALUES
-(1, 'qqq1@qqq.qqq', 'b2ca678b4c936f905fb82f2733f5297f', 'qqq1', 'qqq1', 'f630f7df1b9e0a90d103a7195098f1a8', 0),
-(2, 'qqq@qqq.qqq', 'b2ca678b4c936f905fb82f2733f5297f', 'qqq', 'qqq', 'e245c2b65943574c0cfa1fc3029f4478', 0),
-(3, 'sdfh@zdfh.sdf', 'a5c9a3b44aaf44217da5dcc997765b1f', 'dfh', 'sdfh', '9a61b383cd6b1ea31a0836ab86f65392', 0),
-(4, 'sdfhsdf@zdfhs.sdf', '698d51a19d8a121ce581499d7b701668', 'xdffg', 'sdftgjdfgjd', '3f206ffdae48d0961ba7c1c7974333db', 0),
-(5, 'sss@sss.sss', '9f6e6800cfae7749eb6c486619254b9c', 'sss', 'sss', 'e6ae2bb6525fb1bdf5b4fd223f4263a5', 0),
-(6, 'test230977@gmail.com', '0cc175b9c0f1b6a831c399e269772661', 'a', 'a', 'c0a2af178d1bb01a8a3464c7669ac128', 0),
-(7, 'vvv@vvv.vvv', '4786f3282f04de5b5c7317c490c6d922', 'vvv', 'vvv', '24b3688db1d90b9f5703979dd8c7445e', 0),
-(8, 'www@www.www', '4eae35f1b35977a00ebd8086c259d4c9', 'www', 'www', '6a877ed0f114f44130bca7a57b13ae61', 0),
-(9, 'zzz@zzz.zzz', 'fbade9e36a3f36d3d676c1b808451dd7', 'z', 'z', '5957b6487c5099c1ddb2434dd0dcbd08', 1),
-(10, 'qwerty@qwerty.com', 'd8578edf8458ce06fbc5bb76a58c5ca4', 'qwerty', 'qwerty', '356d00a7233cb4bf2130045dec920e50', 0);
+INSERT INTO `users` (`id`, `email`, `password`, `firstname`, `lastname`, `facebook_access_token`, `avatar`, `activation_code`, `active`) VALUES
+(1, 'aaa@aaa.aaa', '47bce5c74f589f4867dbd57e9ca9f808', 'aaa', 'aaa', '', '', 'c91bde8451ec367189baa1c64723781f', 1),
+(2, 'test230977@gmail.com', '36347412c7d30ae6fde3742bbc4f21b9', 'Ivan', 'Ivanov', 'AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD', 'https://graph.facebook.com/100003261707271/picture?type=small&access_token=AAAG0FICHRPcBALI2HDg9tXRKQ8krKpMcUVQki5OY3hdK8ZC10IuXBDa4fNXcpe9LZCi4iGJ2GfOK0yvyTd4EC1U9G2DpeZCAEBZALKLGhgZDZD', 'f5b342e7146e07089acb1d39f54619cb', 1),
+(3, 'xxx@xxx.xxx', 'f561aaf6ef0bf14d4208bb46a4ccb3ad', 'xxx', 'xxx', '', '', 'abb0353ad49b769700105120d7e28254', 0),
+(4, 'qwerty@qwerty.com', 'd8578edf8458ce06fbc5bb76a58c5ca4', 'qwerty', 'qwerty', '', '', '356d00a7233cb4bf2130045dec920e50', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
