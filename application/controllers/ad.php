@@ -26,7 +26,7 @@ class Ad extends CI_Controller {
                 if ($this->validate($this->input->post())) {
                     $data = $this->input->post();
                     $userData = $this->session->userdata('user');
-                    $data['user_id'] = $userData->id;
+                    $data['user_id'] = $userData['id'];
                     $this->ad->add($data);
                     redirect('/', 'refresh');
                 }
