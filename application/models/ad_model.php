@@ -36,8 +36,10 @@ class Ad_model extends CI_Model
         return $query->result_array();
     }
     
-    function delete($id) {
-        $this->db->delete($this->_name, array('id' => $id)); 
+    function delete($id, $userId) {
+        $this->db->where('id', $id);
+        $this->db->where('user_id', $userId);
+        $this->db->delete($this->_name); 
     }
     
     function updated($id, $data) {

@@ -11,10 +11,27 @@
                 </div>
                 <div id="ad-description">
                     <?=$value['description']?>
-                    <a href="ad/show/<?=$value['id']?>">READ MORE</a>
+                    <a href="/ad/show/<?=$value['id']?>">READ MORE</a>
                 </div>
             </div>
+            <?php if($this->uri->rsegment(2) == 'userAd'):?>
+                <div id="functions-ad">
+                    <a class="delete-ad" href="/ad/delete/<?=$value['id']?>">delete</a>
+                    <a class="delete-edit" href="#">edit</a>
+                </div>
+                <?php endif;?>
         <?php endforeach; ?>
     </div>
 </div>
 <?php $this->load->view('footer',$data); ?>
+<?php if($this->uri->rsegment(2) == 'userAd'):?>
+<script type="text/javascript">
+                    $(document).ready(function(){
+                        $('.delete-ad').click(function(){
+                            if(! confirm('you want to delete this ad?')) {
+                                return false;
+                            }
+                        });
+                    });
+</script>
+<?php endif;?>

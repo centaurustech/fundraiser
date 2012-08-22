@@ -15,6 +15,16 @@ class Ad extends CI_Controller {
         $this->load->view('ad',array('data' => array('title' => 'Fundraisers'), 'ad' => $data));
     }
     
+    public function userAd(){
+        if ($this->session->userdata('user')) {
+            $this->load->model('ad_model','ad');
+            $userData = $this->session->userdata('user');
+            $data = $this->ad->getAd(array('user_id' => $userData['id']));
+            echo link_tag('css/ad.css');
+            $this->load->view('ad',array('data' => array('title' => 'Fundraisers'), 'ad' => $data));
+        }
+    }
+    
     /**
      * Create ad
      */
@@ -57,7 +67,13 @@ class Ad extends CI_Controller {
     }
     
     public function delete($id){
-        
+        if($this->session->userdata('user')){
+            $this->load->model('ad_model','ad');
+            $userData = $this->session->userdata('user');
+            $userId = $userData['id'];
+            $this->ad->delete($id, $userId);
+            redirect('/ad/userAd', 'refresh');
+        }
     }
     
     /**

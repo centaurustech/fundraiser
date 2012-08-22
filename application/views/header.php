@@ -78,6 +78,7 @@
 				<?php if($this->session->userdata('user')){ ?>
 					<li><a href="/profile">Profile</a></li>
 	                <li><a href="/ad/create">Create ad</a></li>
+                    <li><a href="/ad/userAd">My ads</a></li>
 					<li><a href="/auth/logout">Logout</a></li>
 				<?php }else{ ?>
 					<li><a onclick="show_login_form()">login</a></li>
