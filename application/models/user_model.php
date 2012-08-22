@@ -24,20 +24,43 @@ class User_model extends CI_Model
 	}
 
 	function get_user($email=null,$password=null){
-		if(!$email || !$password){
+		if($email || $password){
+			$this->db->select(array('password','email','firstname','lastname','avatar','facebook_access_token','activation_code','active'));
+			return $this->db->get_where('users',array('email'=>$email,'password'=>md5($password)))->row_array();
+		}else{
+			if($this->session->userdata('user')){
+				$user = $this->session->userdata('user');
+				$fresh_user = $this->db->get_where('users',array('email'=>$user['email']))->row_array();
+				if($fresh_user['password']){
+					$fresh_user['password'] = true;
+				}else{
+					$fresh_user['password'] = false;
+				}
+				$this->session->set_userdata('user',$fresh_user);
+				return $fresh_user;
+			}
 			return false;
 		}
-		$this->db->select(array('email','firstname','lastname','avatar','facebook_access_token','activation_code','active'));
-		return $this->db->get_where('users',array('email'=>$email,'password'=>md5($password)))->row_array();
 	}
 
 	function get_facebook_user($token=null){
 		if(!$token){
 			return false;
 		}
-		$this->db->select(array('email','firstname','lastname','avatar','facebook_access_token','activation_code','active'));
+		$this->db->select(array('password','email','firstname','lastname','avatar','facebook_access_token','activation_code','active'));
 		$result = $this->db->get_where('users',array('facebook_access_token'=>$token));
-		return $result->num_rows() > 0 ? $result->row_array() : false;
+		if($result->num_rows() > 0){
+			$user = $result->row_array();
+			if($user['password']){
+				$user['password'] = true;
+			}else{
+				$user['password'] = false;
+			}
+			$this->session->set_userdata('user',$user);
+			return $user;
+		}else{
+			return false;
+		}
 	}
 
 	function register($fname=null,$lname=null,$email=null,$password=null){
@@ -50,9 +73,24 @@ class User_model extends CI_Model
 			return false;
 		}
 
-		if($this->db->get_where('users',array('email'=>$email))->num_rows() > 0){
-			return false;
+		$result = $this->db->get_where('users',array('email'=>$email));
+		if($result->num_rows() > 0){
+			if($result->row()->password == "" && $result->row()->facebook_access_token != ""){
+				// update FB account with new password
+				if($this->db->update('users',array('password'=>md5($password)),array('email'=>$email))){
+					return $this->get_user($email,$password);
+				}
+				return false;
+			}else{
+				// error. email already registered
+				return false;
+			}
 		}
+
+
+		// if($this->db->get_where('users',array('email'=>$email,'password'=>'','facebook_access_token != '=>''))->num_rows() > 0){
+		// 	return false;
+		// }
 
 		if($this->db->insert('users',array(
 			'email'=>$email
@@ -93,24 +131,30 @@ class User_model extends CI_Model
 		return false;
 	}
 
-	function activation_email($code=null){
+	function email_activation($code=null){
 		if(!$code){
 			return result(0);
 		}
 
-		if($this->db->get_where('users',array('activation_code'=>$code))->num_rows() != 1){
-			return result(1202);
-		}	
+		$result = $this->db->get_where('users',array('activation_code'=>$code));
 
-		if($this->db->update('users',array('active'=>1),array('activation_code'=>$code,'active'=>0))){
-			return result(1299);
+		if($result->num_rows() == 1){
+
+			$row = $result->row();
+
+			if($row->active == 1){
+				return result(1201); // already activated
+			}else{
+				$this->db->update('users',array('active'=>1),array('activation_code'=>$code,'active'=>0)); // activate
+				if($this->db->affected_rows() > 0){
+					return result(1299); // activate complete
+				}else{
+					return result(1203); // activate failed
+				}
+			}
+
 		}
-
-		if($this->db->get_where('users',array('activation_code'=>$code,'active'=>'1'))->num_rows() > 0){
-			return result(1201);
-		}
-
-		return result(1203);
+		return result(1202);
 	}
 
 }

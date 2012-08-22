@@ -50,13 +50,15 @@
 					,login_form_password: "Please enter password"
 				},
 				submitHandler: function(form){
-					console.log($(form).serialize());
 					$.ajax({
 						url: "/auth/login"
 						,type: "post"
 						,data: $(form).serialize()
 						,success: function(data){
 							console.log(data);
+							if(data.error !== true){
+								location.href = "profile";
+							}
 						}
 					});
 				}
@@ -88,6 +90,9 @@
 						,data: $(form).serialize()
 						,success: function(data){
 							console.log(data);
+							if(data.error !== true){
+								location.href = "profile";
+							}
 						}
 					});
 				}
@@ -151,6 +156,8 @@
 			console.log(data);
 			var json = $.parseJSON(data);
 			console.log(json);
+			fbuser = json;
+			login_with_facebook();
 			// $("#facebook_login_button").hide();
 			// $("#facebook_logout_button").show();
 		}
@@ -161,47 +168,80 @@
 			console.log(data);
 			var json = $.parseJSON(data);
 			console.log(json);
+
 			// $("#facebook_logout_button").hide();
 			// $("#facebook_login_button").show();
+		}
+
+		var fbuser;
+
+		function login_with_facebook(){
+			console.log(fbuser);
+			if(fbuser.password){ // profile exists, you can log in
+				location.href = "/auth/login_facebook";
+			}else{ // need registration
+				$("#connect_with_facebook_wrapper").remove();
+				show_register_form();
+				$("#register_form_firstname").val(fbuser.firstname);
+				$("#register_form_lastname").val(fbuser.lastname);
+				$("#register_form_email").val(fbuser.email);
+				$("#register_form_password").focus();
+			}
+		}
+
+		function fb_login_existing(){
+			location.href = "/auth/login_facebook?token=" + fbuser.facebook_access_token;
 		}
 	</script>
 
 </head>
 <body>
-	<div id="fb-root"></div>
-	<script type="text/javascript" src="https://connect.facebook.net/en_US/all.js"></script>
-	<script type="text/javascript">
-		FB.init({appId: '<?php $CI = &get_instance(); echo $CI->config->item("facebook_app_id"); ?>', status: true, cookie: true, xfbml: true});
-		FB.getLoginStatus(function(response) { onStatus(response); });
-		function onStatus(response) {
-			if(response && response.authResponse !== null && response.authResponse.accessToken !== null){
-				console.log(response);
-				console.log(response.authResponse);
-				console.log(response.authResponse.accessToken);
-				$.ajax({
-					url: 'auth/get_facebook_user_by_token'
-					,data: {'access_token':response.authResponse.accessToken}
-					,type: 'post'
-					,success: function(data){
-						console.log(data);
-						if(!data.error && data.data){
-							$("#facebook_login_existing_button .avatar").attr('src',data.data.avatar);
-							$("#facebook_login_existing_button .name").html(data.data.firstname + " " + data.data.lastname);
-							$("#facebook_login_existing_button input[type='hidden']").val(data.data.facebook_access_token);
-							$("#facebook_login_existing_button").show();
+
+		<div id="fb-root"></div>
+		<script type="text/javascript" src="https://connect.facebook.net/en_US/all.js"></script>
+		<script type="text/javascript">
+			FB.init({appId: '<?php $CI = &get_instance(); echo $CI->config->item("facebook_app_id"); ?>', status: true, cookie: true, xfbml: true});
+			FB.getLoginStatus(function(response) { onStatus(response); });
+			function onStatus(response) {
+				if(response && response.authResponse !== null && response.authResponse.accessToken !== null){
+					console.log(response);
+					console.log(response.authResponse);
+					console.log(response.authResponse.accessToken);
+					$("#facebook_login_button").hide();
+					$("#wait_facebook").show();
+					$.ajax({
+						url: '<?=base_url()?>/auth/get_facebook_user_by_token'
+						,data: {'access_token':response.authResponse.accessToken}
+						,type: 'post'
+						,success: function(data){
+							console.log(data);
+							
+							if(!data.error && data.data){
+								fbuser = data.data;
+								$("#facebook_login_existing_button .avatar").attr('src',data.data.avatar);
+								$("#facebook_login_existing_button .name").html(data.data.firstname + " " + data.data.lastname);
+								$("#facebook_login_existing_button input[type='hidden']").val(data.data.facebook_access_token);
+								$("#facebook_login_existing_button").show();
+								$("#wait_facebook").hide();
+							}else{
+								fbuser = null;
+								$("#facebook_login_existing_button").hide();
+								$("#facebook_login_button").show();
+								$("#wait_facebook").hide();
+							}
 						}
-					}
-				});
+					});
+				}
+				// if (response.session) {
+				// 	var timestamp = new Date().getTime();
+				// 	var expires = response['session']['expires'] * 1000;
+				// 	if(expires - timestamp >= 0){
+				// 		setTimeout(function(){window.location.reload();}, expires - timestamp);
+				// 	}
+				// }
 			}
-			// if (response.session) {
-			// 	var timestamp = new Date().getTime();
-			// 	var expires = response['session']['expires'] * 1000;
-			// 	if(expires - timestamp >= 0){
-			// 		setTimeout(function(){window.location.reload();}, expires - timestamp);
-			// 	}
-			// }
-		}
-	</script>
+		</script>
+
 	<?php $this->load->view('templates/auth',$data); ?>
 	<div id="header">
 		<pre id="session" class="debug_block" style="display:block;"><strong>SESSION:</strong><br/><?php print_r($this->session->userdata); ?></pre>

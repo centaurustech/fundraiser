@@ -38,6 +38,16 @@ class Auth extends CI_Controller {
 		}
 	}
 
+	public function login_facebook(){
+		$this->load->model('User_model','user');
+		if($this->input->get('token')){
+			$this->user->get_facebook_user($this->input->get('token'));
+		}else{
+			$this->user->get_user();
+		}
+		redirect("profile");
+	}
+
 	public function register(){
 
 		if(!$this->input->post()){
@@ -63,7 +73,7 @@ class Auth extends CI_Controller {
 
 			$this->load->model('User_model','user');
 
-			$user = $this->user->register($this->input->post("firstname"),$this->input->post("lastname"),$this->input->post("email"),$this->input->post("password"));
+			$user = $this->user->register($this->input->post("firstname",true),$this->input->post("lastname",true),$this->input->post("email",true),$this->input->post("password"));
 
 			if($user){
 				$this->session->set_userdata('user',$user);
@@ -125,12 +135,18 @@ class Auth extends CI_Controller {
 		);
 	
 		$this->load->model('User_model','user');
-		$user = $this->user->register_facebook($data["firstname"],$data["lastname"],$data["email"],$data['token'],$data['avatar']);
-		$this->session->set_userdata('user',$this->user->get_facebook_user($data['token']));
 
-		$data['user'] = $user;
+		$user = $this->user->get_facebook_user($data['facebook_access_token']);
+		if(!$user){
+			$user = $this->user->register_facebook($data["firstname"],$data["lastname"],$data["email"],$data['facebook_access_token'],$data['avatar']);
+		}
 
-		$this->load->view('facebook_callback',array("data"=>$data));
+		$user['error'] = false;
+		$user['action'] = 'login';
+
+		$this->session->set_userdata('user',$user);
+
+		$this->load->view('facebook_callback',array("data"=>$user));
 	}
 
 	function facebook_logout_callback(){
@@ -173,6 +189,56 @@ class Auth extends CI_Controller {
 			error_as_json('Access token not valid');
 		}
 	}
+
+
+	public function email(){
+		$segments = $this->uri->segment_array();
+		switch($segments[3]){
+			case 'activation':
+				if(array_key_exists(4,$segments)){
+					switch($segments[4]){
+
+
+						case 'success': // email activatio complete
+							redirect('profile?code='.$this->input->get('code'));
+							break;
+						case 'error': // email activation error
+							redirect('profile?code='.$this->input->get('code'));
+							break;
+						case 'resend': // resend account activation code to email
+							$this->load->model('User_model','user');
+							if(!$this->user->get_user()){
+								echo false;
+							}else{
+								echo '<a href="' . send_activation_email($this->user->get_user()) . '">activate</a>';
+							}
+							break;
+					}
+				}else{		
+					if(!$this->input->get('code')){
+						show_404();
+					}
+
+					$this->load->model('User_model','user');
+
+					$activation_result = $this->user->email_activation($this->input->get('code',true));
+					if($activation_result['error']){
+						redirect(base_url().'auth/email/activation/error?code='.$activation_result['code']);
+					}else{
+						$this->session->set_userdata('user',$this->user->get_user());
+						redirect(base_url().'auth/email/activation/success?code='.$activation_result['code']);
+					}
+				}
+
+				break;
+			default:
+
+				show_404();
+		}
+	}
+
+
+
 
 	private function facebook_register($firstname,$lastname,$email,$password){
 		$this->load->model('User_model','user');

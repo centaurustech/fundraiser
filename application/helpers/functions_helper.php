@@ -25,7 +25,7 @@ function result_as_json($message,$data=null){
 
 
 // Return action result as array with code, description and boolean value(true - error, false - not error)
-function result($id=0){
+function result($id = 0){
 
 	$results = array(
 		0=>array(true,'Unknown error')
@@ -50,7 +50,6 @@ function result($id=0){
 		,1203=>array(true,'Activation failed. Please try resend activation code (on profile page)')
 
 			,1299=>array(false,'Account activation complete')
-
 	);
 
 	if(!array_key_exists($id, $results)){
@@ -66,7 +65,7 @@ function result($id=0){
 
 function send_activation_email($user) {
 
-	return base_url() . "email/activation?code=" . $user->activation_code;
+	return base_url() . "auth/email/activation?code=" . $user['activation_code'];
 	
 	//$this->load->helper('email');
 	// $subject = 'Account Activation';
