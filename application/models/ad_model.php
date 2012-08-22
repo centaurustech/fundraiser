@@ -23,10 +23,10 @@ class Ad_model extends CI_Model
         $this->db->join("fundraisers", "fundraisers.id = {$this->_name}.id_fundraiser", 'left');
         
         if ($option) {
-            if ($option['id']) {
+            if (isset($option['id']) && $option['id']) {
                 $this->db->where("{$this->_name}.id", $option['id']); 
             }
-            if ($option['user_id']) {
+            if (isset($option['user_id']) && $option['user_id']) {
                 $this->db->where("{$this->_name}.user_id", $option['user_id']); 
             }
         }

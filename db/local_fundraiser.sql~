@@ -1,0 +1,3 @@
+ALTER TABLE `transaction` ADD `money` FLOAT NOT NULL;
+
+

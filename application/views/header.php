@@ -208,13 +208,15 @@
 		<pre id="cookies" class="debug_block" style="display:block;"><strong>COOKIE:</strong><br/><?php print_r($_COOKIE); ?></pre>
 		<div id="top_menu">
 			<ul>
-				<li><a href=".">Home</a></li>
-				<li><a href="profile">Profile</a></li>
+				<li><a href="/">Home</a></li>
+				<li><a href="/profile">Profile</a></li>
+                <li><a href="/ad">Ads</a></li>
 			</ul>
 		</div>
 		<div id="auth_menu">
 			<?php if($this->session->userdata('user')){ ?>
-				<a href="auth/logout">Logout</a>	
+				<a href="/auth/logout">Logout</a>
+                <a href="/ad/create">Create ad</a>
 			<?php }else{ ?>
 				<button onclick="show_login_form()">login</button>
 				<button onclick="show_register_form()">Register</button>

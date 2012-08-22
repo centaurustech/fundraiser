@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Авг 21 2012 г., 18:08
+-- Время создания: Авг 22 2012 г., 14:25
 -- Версия сервера: 5.5.24
 -- Версия PHP: 5.3.10-1ubuntu3.2
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `ad` (
   `id_fundraiser` int(11) NOT NULL,
   `need_raise` int(11) NOT NULL,
   `total_cost` int(11) NOT NULL,
-  `still_need_raise` int(11) NOT NULL,
+  `still_need_raise` float NOT NULL,
   `date` date NOT NULL,
   `description` text NOT NULL,
   `meaning` text,
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
 --
 
 INSERT INTO `sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity`, `user_data`) VALUES
-('95607a8dfecdd5658cf56f02b82161e3', '127.0.0.1', 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:14.0) Gecko/20100101 Firefox/14.0.1', 1345548418, '');
+('f6cec40b5413d52df5ac1409f3bb82c9', '127.0.0.1', 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:14.0) Gecko/20100101 Firefox/14.0.1', 1345626511, 'a:1:{s:9:"user_data";s:0:"";}');
 
 -- --------------------------------------------------------
 
@@ -111,6 +111,7 @@ INSERT INTO `sessions` (`session_id`, `ip_address`, `user_agent`, `last_activity
 CREATE TABLE IF NOT EXISTS `transaction` (
   `transaction_id` int(11) NOT NULL,
   `ad_id` int(11) NOT NULL,
+  `money` float NOT NULL,
   PRIMARY KEY (`transaction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -129,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `activation_code` varchar(255) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Дамп данных таблицы `users`
@@ -144,7 +145,8 @@ INSERT INTO `users` (`id`, `email`, `password`, `firstname`, `lastname`, `activa
 (6, 'test230977@gmail.com', '0cc175b9c0f1b6a831c399e269772661', 'a', 'a', 'c0a2af178d1bb01a8a3464c7669ac128', 0),
 (7, 'vvv@vvv.vvv', '4786f3282f04de5b5c7317c490c6d922', 'vvv', 'vvv', '24b3688db1d90b9f5703979dd8c7445e', 0),
 (8, 'www@www.www', '4eae35f1b35977a00ebd8086c259d4c9', 'www', 'www', '6a877ed0f114f44130bca7a57b13ae61', 0),
-(9, 'zzz@zzz.zzz', 'fbade9e36a3f36d3d676c1b808451dd7', 'z', 'z', '5957b6487c5099c1ddb2434dd0dcbd08', 1);
+(9, 'zzz@zzz.zzz', 'fbade9e36a3f36d3d676c1b808451dd7', 'z', 'z', '5957b6487c5099c1ddb2434dd0dcbd08', 1),
+(10, 'qwerty@qwerty.com', 'd8578edf8458ce06fbc5bb76a58c5ca4', 'qwerty', 'qwerty', '356d00a7233cb4bf2130045dec920e50', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

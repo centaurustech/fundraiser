@@ -1,0 +1,18 @@
+.ad {
+    margin: 20px;
+    width: 500px;
+    padding: 10px;
+    border: 1px solid red;
+    overflow: auto;
+}
+.ad div{
+    float: left;
+    padding: 0 10px;
+}
+
+.ad-error{
+	color: red;
+    display: block;
+    font-size: 12px;
+    padding: 0 0 0 7px;
+}
