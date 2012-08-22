@@ -112,12 +112,17 @@ dl dd {
 	color: #fff;
 }
 
-#top_menu > ul{
+#top_menu{
 	margin: 0 0 20px 0;
 	padding: 15px;
 	list-style: none;
 	background: #444;
 	color: white;
+}
+#top_menu > ul{
+	display: inline-block;
+	margin: 0;
+	padding: 0;
 }
 #top_menu > ul > li{
 	display: inline-block;
@@ -158,4 +163,22 @@ dl dd {
 #login_form_wrapper, #register_form_wrapper{
 	background: white;
 	border: solid 1px #999;
+}
+
+
+#top_menu ul li a{
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+#auth_buttons{
+	
+}	
+
+.spacer{
+	display: inline-block;
+}
+
+#wait_facebook{
+	display: none;
 }

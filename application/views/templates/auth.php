@@ -5,12 +5,15 @@
 		<a href="javascript:" class="close_modal_button">Close</a>
 
 		<div id="connect_with_facebook_wrapper">
+			<p>Connect with Facebook</p>
 			<button id="facebook_login_existing_button" onclick="fb_login_existing()">
 				<img class="avatar" src="" alt="">
 				<div class="name"></div>
 				<input type="hidden" value="">
 			</button>
 			<button id="facebook_login_button" onclick="fb_login()">FACEBOOK LOGIN</button>
+			<img id="wait_facebook" src="/images/loading.gif" alt="">
+			<p>or</p>
 			<!-- <button id="facebook_logout_button" onclick="fb_logout()">FACEBOOK LOGOUT</button> -->
 		</div>
 
