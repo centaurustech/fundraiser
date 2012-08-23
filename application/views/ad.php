@@ -2,7 +2,7 @@
 <div id="content">
     <div id="ads">
         <?php foreach($ad as $value): ?>
-            <div id="ad_<?=$value['id']?>" class="ad">
+            <div id="ad_<?=$value['id']?>" class="ad <?= ($value['published']) ? '' : 'unpublished' ?>">
                 <div><img width="110" height="100" src="/images/photo_not_available.png"/></div>
                 <div>             
                     <p>Raised: <?=$value['still_need_raise']?></p>

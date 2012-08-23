@@ -2,8 +2,12 @@
     margin: 20px;
     width: 500px;
     padding: 10px;
-    border: 1px solid red;
+    border: 1px solid green;
     overflow: auto;
+}
+
+.ad.unpublished {
+    border: 1px solid red;
 }
 .ad div{
     float: left;

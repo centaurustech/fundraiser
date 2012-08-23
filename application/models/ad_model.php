@@ -29,6 +29,9 @@ class Ad_model extends CI_Model
             if (isset($option['user_id']) && $option['user_id']) {
                 $this->db->where("{$this->_name}.user_id", $option['user_id']); 
             }
+            if (isset($option['published']) && $option['published']) {
+                $this->db->where("{$this->_name}.published", $option['published']); 
+            }
         }
         
         $query = $this->db->get();
@@ -42,8 +45,9 @@ class Ad_model extends CI_Model
         $this->db->delete($this->_name); 
     }
     
-    function updated($id, $data) {
+    function updated($id, $userId, $data) {
         $this->db->where('id', $id);
+        $this->db->where('user_id', $userId);
         $this->db->update($this->_name, $data); 
     }
 

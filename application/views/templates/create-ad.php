@@ -1,6 +1,6 @@
 <script type="text/javascript" src="/js/jquery-ui-1.8.23.custom.min.js"></script>
 <div id="create-ad">
-    <form method="post" id="form" action="/ad/create" novalidate="novalidate">
+    <form method="post" id="form" action="/ad/create/published" novalidate="novalidate">
         <label>Choose the type of your fundraiser</label><br/>
         <select id="id_fundraiser" name="id_fundraiser">
             <option value="0">select a fundraising type</option>
@@ -27,7 +27,8 @@
         <label for="meaning">What does this Trip mean to you?</label><br/>
         <textarea id="meaning" name="meaning"></textarea>
         <div class="ad-error"></div>
-        <input id="submit" type="submit" value="save & continue" />
+        <input id="submit" onClick="document.forms.form.action = '/ad/create/published'" type="submit" value="save & continue" /> or 
+        <input type="submit" onClick="document.forms.form.action = '/ad/create'" value="save & finish later"/>
 	</form>
 </div>
 <script type="text/javascript">
@@ -46,31 +47,14 @@
         $('#need_raise').keyup(function(){
             $('#still_need_raise').val($('#need_raise').val());
         });
+        $('#need_raise').blur(function(){
+            $('#still_need_raise').val($('#need_raise').val());
+        });
         $('#form').submit(function()
         {
             $('.ad-error').text('')
             var error = false;
             var re = /^[0-9]+$/;
-            if (! $('#description').val()) {
-                $('#description + .ad-error').text('This field is required.')
-                error = true;
-            }
-            if ($('#id_fundraiser').val() == '0') {
-                $('#id_fundraiser + .ad-error').text('Please select a fundraising type.')
-                error = true;
-            }
-            if (! $('#still_need_raise').val()) {
-                $('#still_need_raise + .ad-error').text('This field is required.')
-                error = true;
-            }
-            if (! $('#datepicker').val()) {
-                $('.ad-error.date').text('This field is required.')
-                error = true;
-            }
-            if (! $('#meaning').val()) {
-                $('#meaning + .ad-error').text('This field is required.')
-                error = true;
-            }
             if (! re.test($('#need_raise').val())) {
                 $('#need_raise + .ad-error').text('Whole numbers only please')
                 error = true;
@@ -83,10 +67,34 @@
                 $('#still_need_raise + .ad-error').text('Whole numbers only please')
                 error = true;
             }
-            if (parseInt($('#need_raise').val()) > parseInt($('#total_cost').val())) {
+            
+            if ($(this).attr('action') == '/ad/create/published') {
+                if (! $('#description').val()) {
+                    $('#description + .ad-error').text('This field is required.')
+                    error = true;
+                }
+                if ($('#id_fundraiser').val() == '0') {
+                    $('#id_fundraiser + .ad-error').text('Please select a fundraising type.')
+                    error = true;
+                }
+                if (! $('#still_need_raise').val()) {
+                    $('#still_need_raise + .ad-error').text('This field is required.')
+                    error = true;
+                }
+                if (! $('#datepicker').val()) {
+                    $('.ad-error.date').text('This field is required.')
+                    error = true;
+                }
+                if (! $('#meaning').val()) {
+                    $('#meaning + .ad-error').text('This field is required.')
+                    error = true;
+                }
+                if (parseInt($('#need_raise').val()) > parseInt($('#total_cost').val())) {
                 $('#total_cost + .ad-error').text('Total cost should be more')
                 error = true;
             }
+            }
+            console.log($(this).attr('action'));
             if (error) {
                 return false;
             }
