@@ -59,14 +59,50 @@ class Ad extends CI_Controller {
         if ($id) {
             $this->load->model('ad_model','ad');
             $data = $this->ad->getAd(array('id' => $id));
+            if (! $data) {
+                redirect('/ad/userAd', 'refresh');
+            }
             $this->load->view('show-ad',array('data' => array('title' => 'Show'), 'ad' => $data));
         } else {
             redirect('/ad', 'refresh');
         }
     }
 
-    public function edit($id){
-        
+    public function edit($id = null, $published = false){
+        if($this->session->userdata('user') && $id){
+            $this->load->model('fundraisers_model','fundraisers');
+            $this->load->model('ad_model','ad');
+            if ($this->input->post()){
+                if ($this->validate($this->input->post(), $published)) {
+                    $data = $this->input->post();
+                    $userData = $this->session->userdata('user');
+                    if ($published) {
+                        $data['published'] = '1';
+                    } else {
+                        $data['published'] = '0';
+                    }
+                    $userId = $userData['id'];
+                    $this->ad->updated($id, $userId, $data);
+                    redirect('/ad/userAd', 'refresh');
+                }
+            }
+            $data['fundraisers'] = $this->fundraisers->getFundraisers();
+            $data['ad'] = $this->ad->getAd(array('id' => $id));
+            if (! $data['ad']) {
+                redirect('/ad/userAd', 'refresh');
+            }
+            foreach ($data['ad'] as $values) {
+                foreach($values as $key => $value) {
+                    $data['ad'][$key] = htmlspecialchars($value);
+                }
+            }
+            echo link_tag('css/jquery-ui-1.8.23.custom.css');
+            echo link_tag('css/ad.css');
+            $this->load->view('header', array('data' => array('title' => 'create add')));
+            $this->load->view('templates/create-ad', $data);
+        } else {
+            redirect('/ad', 'refresh');
+        }
     }
     
     public function delete($id){

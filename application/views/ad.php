@@ -2,6 +2,13 @@
 <div id="content">
     <div id="ads">
         <?php foreach($ad as $value): ?>
+            <?php if($this->uri->rsegment(2) == 'userAd'):?>
+                <div id="functions-ad">
+                    <a class="view-ad" href="/ad/show/<?=$value['id']?>">view</a> | 
+                    <a class="delete-edit" href="/ad/edit/<?=$value['id']?>">edit</a> | 
+                    <a class="delete-ad" href="/ad/delete/<?=$value['id']?>">delete</a>
+                </div>
+                <?php endif;?>
             <div id="ad_<?=$value['id']?>" class="ad <?= ($value['published']) ? '' : 'unpublished' ?>">
                 <div><img width="110" height="100" src="/images/photo_not_available.png"/></div>
                 <div>             
@@ -14,12 +21,6 @@
                     <a href="/ad/show/<?=$value['id']?>">READ MORE</a>
                 </div>
             </div>
-            <?php if($this->uri->rsegment(2) == 'userAd'):?>
-                <div id="functions-ad">
-                    <a class="delete-ad" href="/ad/delete/<?=$value['id']?>">delete</a>
-                    <a class="delete-edit" href="#">edit</a>
-                </div>
-                <?php endif;?>
         <?php endforeach; ?>
     </div>
 </div>

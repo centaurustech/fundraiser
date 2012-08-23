@@ -5,30 +5,30 @@
         <select id="id_fundraiser" name="id_fundraiser">
             <option value="0">select a fundraising type</option>
            <?php foreach($fundraisers as $value): ?>
-            <option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
+            <option value="<?= $value['id'] ?>" <?=(isset($ad['id_fundraiser']) && $value['id'] == $ad['id_fundraiser']) ? 'selected' : '' ?>><?= $value['name'] ?></option>
             <?php endforeach; ?>
         </select>
         <div class="ad-error"></div>
         <label for="need_raise">What is your goal - how much do you need to raise?</label><br/>
-		<input id="need_raise" name="need_raise" type="text" class="numbers"/>
+		<input id="need_raise" name="need_raise" type="text" class="numbers" value="<?= (isset($ad['need_raise']))  ? $ad['need_raise'] : '' ?>"/>
         <div class="ad-error"></div>
 		<label for="total_cost">What is the total cost of your trip?</label><br/>
-        <input id="total_cost" name="total_cost" type="text" class="numbers"/>
+        <input id="total_cost" name="total_cost" type="text" class="numbers" value="<?= (isset($ad['total_cost'])) ? $ad['total_cost'] : '' ?>"/>
         <div class="ad-error"></div>
         <label for="still_need_raise">How much do you still nees to raise?</label><br/>
-        <input id="still_need_raise" name="still_need_raise" type="text" readonly/>
+        <input id="still_need_raise" name="still_need_raise" type="text" readonly value="<?= (isset($ad['still_need_raise'])) ? $ad['still_need_raise'] : '' ?>"/>
         <div class="ad-error"></div>
         <label for="datepicker">What is the departure date of your trip?</label><br/>
-        <input id="datepicker" type="text" name="date"/>
+        <input id="datepicker" type="text" name="date" value="<?= (isset($ad['date']) && $ad['date'] != '0000-00-00') ? $ad['date'] : '' ?>"/>
         <div class="ad-error date"></div>
         <label for="description">Trip Description</label><br/>
-        <textarea id="description" name="description"></textarea>
+        <textarea id="description" name="description"><?= (isset($ad['description'])) ? $ad['description'] : '' ?></textarea>
         <div class="ad-error"></div>
         <label for="meaning">What does this Trip mean to you?</label><br/>
-        <textarea id="meaning" name="meaning"></textarea>
+        <textarea id="meaning" name="meaning"><?= (isset($ad['meaning'])) ? $ad['meaning'] : '' ?></textarea>
         <div class="ad-error"></div>
-        <input id="submit" onClick="document.forms.form.action = '/ad/create/published'" type="submit" value="save & continue" /> or 
-        <input type="submit" onClick="document.forms.form.action = '/ad/create'" value="save & finish later"/>
+        <input id="submit" onClick="document.forms.form.action = '<?= (isset($ad)) ? "/ad/edit/{$ad['id']}/published" : '/ad/create/published'?>'" type="submit" value="save & continue" /> or 
+        <input type="submit" onClick="document.forms.form.action = '<?= (isset($ad)) ? "/ad/edit/{$ad['id']}" : '/ad/create' ?>'" value="save & finish later"/>
 	</form>
 </div>
 <script type="text/javascript">
@@ -68,7 +68,7 @@
                 error = true;
             }
             
-            if ($(this).attr('action') == '/ad/create/published') {
+            if ($(this).attr('action') == '<?= (isset($ad['id'])) ? "/ad/edit/{$ad['id']}/published" : '/ad/create/published' ?>') {
                 if (! $('#description').val()) {
                     $('#description + .ad-error').text('This field is required.')
                     error = true;
@@ -92,9 +92,8 @@
                 if (parseInt($('#need_raise').val()) > parseInt($('#total_cost').val())) {
                 $('#total_cost + .ad-error').text('Total cost should be more')
                 error = true;
+                }
             }
-            }
-            console.log($(this).attr('action'));
             if (error) {
                 return false;
             }
