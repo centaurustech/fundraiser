@@ -1,33 +1,35 @@
+<?php $this->load->view('header', $data); ?>
 <script type="text/javascript" src="/js/jquery-ui-1.8.23.custom.min.js"></script>
 <div id="create-ad">
-    <form method="post" id="form" action="/ad/create" novalidate="novalidate">
+    <form method="post" id="form" action="/ad/create/published" novalidate="novalidate">
         <label>Choose the type of your fundraiser</label><br/>
         <select id="id_fundraiser" name="id_fundraiser">
             <option value="0">select a fundraising type</option>
            <?php foreach($fundraisers as $value): ?>
-            <option value="<?= $value['id'] ?>"><?= $value['name'] ?></option>
+            <option value="<?= $value['id'] ?>" <?=(isset($ad['id_fundraiser']) && $value['id'] == $ad['id_fundraiser']) ? 'selected' : '' ?>><?= $value['name'] ?></option>
             <?php endforeach; ?>
         </select>
         <div class="ad-error"></div>
         <label for="need_raise">What is your goal - how much do you need to raise?</label><br/>
-		<input id="need_raise" name="need_raise" type="text" class="numbers"/>
+		<input id="need_raise" name="need_raise" type="text" class="numbers" value="<?= (isset($ad['need_raise']))  ? $ad['need_raise'] : '' ?>"/>
         <div class="ad-error"></div>
 		<label for="total_cost">What is the total cost of your trip?</label><br/>
-        <input id="total_cost" name="total_cost" type="text" class="numbers"/>
+        <input id="total_cost" name="total_cost" type="text" class="numbers" value="<?= (isset($ad['total_cost'])) ? $ad['total_cost'] : '' ?>"/>
         <div class="ad-error"></div>
         <label for="still_need_raise">How much do you still nees to raise?</label><br/>
-        <input id="still_need_raise" name="still_need_raise" type="text" readonly/>
+        <input id="still_need_raise" name="still_need_raise" type="text" readonly value="<?= (isset($ad['still_need_raise'])) ? $ad['still_need_raise'] : '' ?>"/>
         <div class="ad-error"></div>
         <label for="datepicker">What is the departure date of your trip?</label><br/>
-        <input id="datepicker" type="text" name="date"/>
+        <input id="datepicker" type="text" name="date" value="<?= (isset($ad['date']) && $ad['date'] != '0000-00-00') ? $ad['date'] : '' ?>"/>
         <div class="ad-error date"></div>
         <label for="description">Trip Description</label><br/>
-        <textarea id="description" name="description"></textarea>
+        <textarea id="description" name="description"><?= (isset($ad['description'])) ? $ad['description'] : '' ?></textarea>
         <div class="ad-error"></div>
         <label for="meaning">What does this Trip mean to you?</label><br/>
-        <textarea id="meaning" name="meaning"></textarea>
+        <textarea id="meaning" name="meaning"><?= (isset($ad['meaning'])) ? $ad['meaning'] : '' ?></textarea>
         <div class="ad-error"></div>
-        <input id="submit" type="submit" value="save & continue" />
+        <input id="submit" onClick="document.forms.form.action = '<?= (isset($ad)) ? "/ad/edit/{$ad['id']}/published" : '/ad/create/published'?>'" type="submit" value="save & continue" /> or 
+        <input type="submit" onClick="document.forms.form.action = '<?= (isset($ad)) ? "/ad/edit/{$ad['id']}" : '/ad/create' ?>'" value="save & finish later"/>
 	</form>
 </div>
 <script type="text/javascript">
@@ -46,31 +48,14 @@
         $('#need_raise').keyup(function(){
             $('#still_need_raise').val($('#need_raise').val());
         });
+        $('#need_raise').blur(function(){
+            $('#still_need_raise').val($('#need_raise').val());
+        });
         $('#form').submit(function()
         {
             $('.ad-error').text('')
             var error = false;
             var re = /^[0-9]+$/;
-            if (! $('#description').val()) {
-                $('#description + .ad-error').text('This field is required.')
-                error = true;
-            }
-            if ($('#id_fundraiser').val() == '0') {
-                $('#id_fundraiser + .ad-error').text('Please select a fundraising type.')
-                error = true;
-            }
-            if (! $('#still_need_raise').val()) {
-                $('#still_need_raise + .ad-error').text('This field is required.')
-                error = true;
-            }
-            if (! $('#datepicker').val()) {
-                $('.ad-error.date').text('This field is required.')
-                error = true;
-            }
-            if (! $('#meaning').val()) {
-                $('#meaning + .ad-error').text('This field is required.')
-                error = true;
-            }
             if (! re.test($('#need_raise').val())) {
                 $('#need_raise + .ad-error').text('Whole numbers only please')
                 error = true;
@@ -83,9 +68,32 @@
                 $('#still_need_raise + .ad-error').text('Whole numbers only please')
                 error = true;
             }
-            if (parseInt($('#need_raise').val()) > parseInt($('#total_cost').val())) {
+            
+            if ($(this).attr('action') == '<?= (isset($ad['id'])) ? "/ad/edit/{$ad['id']}/published" : '/ad/create/published' ?>') {
+                if (! $('#description').val()) {
+                    $('#description + .ad-error').text('This field is required.')
+                    error = true;
+                }
+                if ($('#id_fundraiser').val() == '0') {
+                    $('#id_fundraiser + .ad-error').text('Please select a fundraising type.')
+                    error = true;
+                }
+                if (! $('#still_need_raise').val()) {
+                    $('#still_need_raise + .ad-error').text('This field is required.')
+                    error = true;
+                }
+                if (! $('#datepicker').val()) {
+                    $('.ad-error.date').text('This field is required.')
+                    error = true;
+                }
+                if (! $('#meaning').val()) {
+                    $('#meaning + .ad-error').text('This field is required.')
+                    error = true;
+                }
+                if (parseInt($('#need_raise').val()) > parseInt($('#total_cost').val())) {
                 $('#total_cost + .ad-error').text('Total cost should be more')
                 error = true;
+                }
             }
             if (error) {
                 return false;
@@ -94,3 +102,4 @@
         
     });
 </script>
+<?php $this->load->view('footer', $data); ?>

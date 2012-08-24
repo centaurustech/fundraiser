@@ -35,7 +35,7 @@
 		var FACEBOOK_LOGOUT_URL = "<?php echo $facebook_logout_url; ?>";
 	</script>
 
-
+	<script type="text/javascript" src="/js/jquery.min.js"></script>
 
 	<!-- IE Fix for HTML5 Tags -->
 	<!--[if lt IE 9]>
@@ -80,8 +80,12 @@
 					}
 				});
 			}
+
 		}
 	</script>
+
+		<pre id="session" class="debug_block" style="display:none;"><strong>SESSION:</strong><br/><?php print_r($this->session->userdata); ?></pre>
+		<pre id="cookies" class="debug_block" style="display:none;"><strong>COOKIE:</strong><br/><?php print_r($_COOKIE); ?></pre>
 
 <!-- header section -->
 <div id="headerContainer">
@@ -102,7 +106,7 @@
 			
 			<div class="fbl">
 				<p>Get going quicker; connect with Facebook:</p>
-				<img src="images/main/fb-button.png" alt="Login" onclick="fb_login()">
+				<img src="/images/main/fb-button.png" alt="Login" onclick="fb_login()">
 			</div>
 
 			<p>or, complete the information below:</p>
@@ -191,20 +195,26 @@
 
 			
 			<a class="close-reveal-modal">×</a>
-			
 		</div>
+			
+		<div id="header">
 
+			<div class="tweleve columns nav">
+			
+				<ul class="nav-bar">
+					<li class="active"><a href="/">Home</a></li>
+	                <li><a href="/ad">Ads</a></li>
+					<?php if($this->session->userdata('user')){ ?>
+						<li><a href="/profile">Profile</a></li>
+		                <li><a href="/ad/create">Create Fundraiser</a></li>
+	                    <li><a href="/ad/userAd">My ads</a></li>
+					<?php } ?>
+					<li><a href="/">Features</a></li>
+					<li><a href="/">FAQs</a></li>
+					<li><a href="/">Give Funds</a></li>
+				</ul>
 
-		<div class="tweleve columns nav">
-		
-			<ul class="nav-bar">
-				<li class="active"><a href="/">Home</a></li>
-				<li><a href="/">Features</a></li>
-				<li><a href="/">FAQs</a></li>
-				<li><a href="/">Create Fundraiser</a></li>
-				<li><a href="/">Give Funds</a></li>
-			</ul>
-
+			</div>
 		</div>
 	</div>
 </div>

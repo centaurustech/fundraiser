@@ -4,7 +4,7 @@
 <div class="row">
 <div class="twelve columns">
 					<div class="logos">
-					<img src="images/main/footer-logos.png" alt="Partner Logos"> </div>
+					<img src="/images/main/footer-logos.png" alt="Partner Logos"> </div>
 				</div>
 <div class="two columns down">
 	<ul>
@@ -37,7 +37,7 @@
 	</ul>
 </div>
 <div class="four columns">
-	<img src="images/main/footer-logo.png" alt="School Tours of America"> 
+	<img src="/images/main/footer-logo.png" alt="School Tours of America"> 
 		<p><strong>Corporate Headquarters
 		
 			</strong></p>
@@ -81,7 +81,7 @@
 	
 	-->
 
-	<script type="text/javascript" src="/js/jquery.min.js"></script>
+	
 
 
 	<!-- Included JS Files (Compressed) -->
@@ -93,12 +93,10 @@
 	<script src="/js/app.js"></script>
 	
 	<!--<script type="text/javascript" src="/js/jquery.validate.min.js"></script>-->
-
+	<script type="text/javascript" src="/js/jquery-ui-1.8.23.custom.min.js"></script>
+	
 	<script type="text/javascript" src="/js/script.js"></script>
 	<script type="text/javascript" src="/js/jquery.form.validation.js"></script>
 
-	<script type="text/javascript">
-
-	</script>
 </body>
 </html>
