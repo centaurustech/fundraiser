@@ -12,7 +12,45 @@ class Auth extends CI_Controller {
 	}
 
 	function test(){
-		echo "AUTH TEST";
+		// $this->load->library('email');
+
+		// $this->email->from('your@example.com', 'Your Name');
+		// $this->email->to('bergerivan@mail.ru'); 
+		// //$this->email->cc('test230977@gmail.com'); 
+		// //$this->email->bcc('them@their-example.com'); 
+
+		// $this->email->subject('Email Test 2');
+		// $this->email->message('Testing the email class. 2');	
+
+		// $res = $this->email->send();
+
+		// //var_dump($res);
+
+		// echo $this->email->print_debugger();
+
+
+
+
+
+		//$this->load->model('User_model','user');
+		//$this->load->library('email');
+		//$this->load->helper('email');
+
+
+
+
+		//$user = $this->user->get_user();
+
+		//$subject = 'Account Activation';
+		//$recipient = $user['email'];
+		//$message = $user['activation_code'];
+		//send_email($recipient, $subject, $message);
+
+		//print_r(base_url() . "auth/email/activation?code=" . $user['activation_code']);
+
+		//echo "<pre>";
+		//print_r($user);
+		//echo "</pre>";
 	}
 
 	public function logout(){
@@ -41,7 +79,7 @@ class Auth extends CI_Controller {
 	public function login_facebook(){
 		$this->load->model('User_model','user');
 		if($this->input->get('token')){
-			$this->user->get_facebook_user($this->input->get('token'));
+			$this->session->set_userdata('user',$this->user->get_facebook_user($this->input->get('token')));
 		}else{
 			$this->user->get_user();
 		}
@@ -57,7 +95,6 @@ class Auth extends CI_Controller {
 		$this->load->helper('functions');
 		$this->load->helper('email');	
 
-
 		if(!(boolean)$this->input->post("firstname") || 
 			!(boolean)$this->input->post("lastname") || 
 			!(boolean)$this->input->post("email") || !valid_email($this->input->post("email")) ||
@@ -68,20 +105,21 @@ class Auth extends CI_Controller {
 		){
 		 	error_as_json('Registration error, please check all fields');
 		}else{
-			$this->session->unset_userdata('post');
-			$this->session->unset_userdata('error');
+			// $this->session->unset_userdata('post');
+			// $this->session->unset_userdata('error');
 
 			$this->load->model('User_model','user');
 
 			$user = $this->user->register($this->input->post("firstname",true),$this->input->post("lastname",true),$this->input->post("email",true),$this->input->post("password"));
 
 			if($user){
+				$this->send_email($user);
 				$this->session->set_userdata('user',$user);
-				$activation_url = send_activation_email($user);
-				result_as_json('Registration complete. Please check email to activate account. ' . $activation_url);
+				//$activation_url = send_activation_email($user);
+				result_as_json('Registration complete. Please check email to activate account.');
 			}else{
 				$this->session->unset_userdata('user');
-				error_as_json('Registration error, please check all fields.' . json_encode($user));
+				error_as_json('Registration error, please check all fields.');
 			}
 		}
 
@@ -139,6 +177,7 @@ class Auth extends CI_Controller {
 		$user = $this->user->get_facebook_user($data['facebook_access_token']);
 		if(!$user){
 			$user = $this->user->register_facebook($data["firstname"],$data["lastname"],$data["email"],$data['facebook_access_token'],$data['avatar']);
+			$this->send_email($user);
 		}
 
 		$user['error'] = false;
@@ -208,9 +247,11 @@ class Auth extends CI_Controller {
 						case 'resend': // resend account activation code to email
 							$this->load->model('User_model','user');
 							if(!$this->user->get_user()){
-								echo false;
+								redirect('/');
 							}else{
-								echo '<a href="' . send_activation_email($this->user->get_user()) . '">activate</a>';
+								//var_dump($this->user->get_user());
+								v(send_activation_email($this->user->get_user()));
+								//redirect('/profile?code=1298');
 							}
 							break;
 					}
@@ -295,6 +336,21 @@ class Auth extends CI_Controller {
 			return true;
 		}
 		return false;
+	}
+
+
+	private function send_email($user){
+		$this->load->library('email');
+
+		$this->email->from('your@example.com', 'Your Name');
+		$this->email->to($user['email']); 
+		// //$this->email->cc('test230977@gmail.com'); 
+		// //$this->email->bcc('them@their-example.com'); 
+
+		$this->email->subject('Account activation');
+		$this->email->message(base_url() . "auth/email/activation?code=" . $user['activation_code']);	
+
+		$res = $this->email->send();
 	}
 
 }

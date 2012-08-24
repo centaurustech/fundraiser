@@ -13,9 +13,9 @@ class Profile extends CI_Controller {
 		if(!$user){
 			redirect('/');
 		}
-		if($user['active'] == 0){
-			$user['activation_url'] = send_activation_email($user);
-		}
+		// if($user['active'] == 0){
+		// 	$user['activation_url'] = send_activation_email($user);
+		// }
 
 		$data = array(
 			'account'=>$user

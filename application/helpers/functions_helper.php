@@ -48,7 +48,9 @@ function result($id = 0){
 		,1201=>array(true,'Account already activated')
 		,1202=>array(true,'Wrong activation code')
 		,1203=>array(true,'Activation failed. Please try resend activation code (on profile page)')
+		,1204=>array(true,'An error occurred while sending mail, try again later')
 
+			,1298=>array(false,'Activation code was sent to your mailbox')
 			,1299=>array(false,'Account activation complete')
 	);
 
@@ -64,12 +66,46 @@ function result($id = 0){
 }
 
 function send_activation_email($user) {
+	error_reporting(E_ALL);
+	$this->load->library('email');
+	//v($user['email']);
 
-	return base_url() . "auth/email/activation?code=" . $user['activation_code'];
+	//var_dump($this->email);
+
+	// $this->email->from('your@example.com', 'Your Name');
+	// $this->email->to($user['email']); 
+	// $this->email->subject('Account activation');
+
+	// //$activation_url = base_url() . "auth/email/activation?code=" . $user['activation_code'];
+	// $activation_url = "auth/email/activation?code=" . $user['activation_code'];
 	
-	//$this->load->helper('email');
-	// $subject = 'Account Activation';
-	// $recipient = $user['email'];
-	// $message = $user['activation_code'];
-	//return send_email($recipient, $subject, $message);
+	// $this->email->message($activation_url);	
+
+	//return $this->email;
+
+	//return $this->email->send();
+	//return base_url() . "auth/email/activation?code=" . $user['activation_code'];
+}
+
+
+function p($data){
+	echo "<pre>";
+	print_r($data);
+	echo "</pre>";
+}
+
+function v($data){
+	echo "<pre>";
+	var_dump($data);
+	echo "</pre>";
+}
+
+function pd($data){
+	p($data);
+	die();
+}
+
+function vd($data){
+	v($data);
+	die();
 }

@@ -1,0 +1,243 @@
+@charset "UTF-8";
+/* CSS Document */
+
+h1,h2,h3,h4,h5,h6 {
+	color: #054215;
+}
+
+.center {
+	text-align: center;
+}
+
+.no-margin {
+	margin: 0;
+	padding-left: 90px;
+}
+
+div.four.columns.home {
+	padding-bottom: 15px;
+	padding-top: 15px;
+	border-top: 1px solid #189c3a;
+	border-bottom: 1px solid #189c3a;
+	margin-bottom: 20px;
+}
+
+div.five.columns {
+}
+
+div.login {
+	display: inline-block;
+	position: relative;
+	text-align: right;
+	height: 90px;
+	float: right;
+	width: 90px;
+	margin-bottom: 10px;
+}
+div.login a {
+	text-shadow: none;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+div.logo {
+	height: 110px;
+	background: url(../images/main/logo.png) no-repeat;
+	display: inline-block;
+	position: relative;
+	float: left;
+	margin-bottom: 20px;
+	width: 293px;
+}
+
+
+
+.textRight {
+	text-align: right;
+}
+
+.heroLeft h1 {
+	padding: 30px 60px;
+	color: #fffeff;
+	text-shadow: #000000 2px 2px 1px;
+}
+
+span.color {
+	color: #ffc346;
+	font-style: italic;
+}
+
+div#headerContainer {
+	background: #2d7b3a; /* Old browsers */
+background: -moz-linear-gradient(top,  #2d7b3a 0%, #97cc88 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2d7b3a), color-stop(100%,#97cc88)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #2d7b3a 0%,#97cc88 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #2d7b3a 0%,#97cc88 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #2d7b3a 0%,#97cc88 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #2d7b3a 0%,#97cc88 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2d7b3a', endColorstr='#97cc88',GradientType=0 );
+	padding-top: 1em;
+	padding-bottom: 1em;
+	border-bottom: 2px solid #ffffff;
+}
+
+div.centerWrapper {
+	background: #d9eef6 url(../images/main/mainbg.png) repeat-x;
+	padding-top: 20px;
+}
+
+div.footerWrapper {
+	background: #0c6222 url(../images/main/footerbg.png) repeat-x;
+	padding-top: 100px;
+	padding-bottom: 20px;
+}
+
+.footerWrapper p {
+	font-size: 13px;
+	margin-bottom: 5px;
+	line-height: 16px;
+	color: #6ca950;
+	text-shadow: none;
+	padding-left: 20px;
+}
+.footerWrapper a{
+	color: #a0c48f;
+	font-size: 12px;
+	text-decoration: none;
+	text-shadow: none;
+}
+
+.footerWrapper li {
+	border-bottom: 1px solid #6fa158;
+}
+
+h3.blue {
+	color: #1267a9;
+	font-weight: bold;
+	font-style: italic;
+	margin-bottom: 5px;
+	margin-top: 30px;
+}
+div.down {
+	margin-top: 38px;
+}
+
+div.eight.columns.heroLeft {
+	background: #2e9047 url(../images/homeHeroBg.png) repeat-y center top;
+	border: 1px solid #fffeff;
+	-webkit-box-shadow: -2px 0px 15px rgba(50, 50, 50, 0.65);
+-moz-box-shadow:    -2px 0px 15px rgba(50, 50, 50, 0.65);
+box-shadow:         -2px 0px 15px rgba(50, 50, 50, 0.65);
+}
+
+div.four.columns.heroRight {
+	background: rgb(63,76,107); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(63,76,107,1) 0%, rgba(63,76,107,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(63,76,107,1)), color-stop(100%,rgba(63,76,107,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(63,76,107,1) 0%,rgba(63,76,107,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(63,76,107,1) 0%,rgba(63,76,107,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(63,76,107,1) 0%,rgba(63,76,107,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(63,76,107,1) 0%,rgba(63,76,107,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3f4c6b', endColorstr='#3f4c6b',GradientType=0 );
+	text-align: center;
+	border: 1px solid #fffeff;
+	border-left-width: 0;
+	border-left-style: none;
+	left: -1px;
+	-webkit-box-shadow: 2px 0px 15px rgba(50, 50, 50, 0.65);
+-moz-box-shadow:    2px 0px 15px rgba(50, 50, 50, 0.65);
+box-shadow:         2px 0px 15px rgba(50, 50, 50, 0.65);
+}
+
+p.itsFree {
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 1px;
+	color: #fffeff;
+	top: -7px;
+	position: relative;
+	font-size: 1.5em;
+	line-height: 1em;
+	text-shadow: none;
+}
+
+div.home.panel {
+	margin-top: 20px;
+	background-color: transparent;
+	border-style: none;
+	padding: 30px 0 20px;
+}
+
+h3.underHero {
+	font-weight: normal;
+	font-style: normal;
+	text-shadow: #fffeff 1px 1px 0;
+	font-size: 1.7em;
+	text-align: center;
+	color: #27813e;
+}
+
+img.up {
+	position: relative;
+	top: -15px;
+}
+
+#headerContainer div.row div.tweleve.columns.nav {
+	float: right;
+}
+
+
+div.fbl p {
+	margin-bottom: 0;
+	float: left;
+	margin-right: 10px;
+}
+
+#login div.fbl {
+	border-bottom: 1px solid #0c6222;
+	border-top: 1px solid #0c6222;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+}
+
+.custom div.row input {
+	margin-bottom: 20px;
+}
+
+form.custom div.row div.tweleve.columns label {
+	line-height: 1.5;
+}
+
+form.custom div.row.last {
+	margin-bottom: 0;
+	margin-top: 20px;
+}
+
+input.large.success.button {
+	text-transform: uppercase;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-bottom: 0;
+}
+
+#login form.custom div.row div.six.columns.btm {
+	line-height: 50px;
+	font-weight: bold;
+}
+
+@media only screen and (max-width: 479px){
+	.heroLeft h1 {
+	padding: 30px 0 30px 10px;
+	color: #fffeff;
+	text-shadow: #000000 2px 2px 1px;
+	font-size: 28px;
+}
+div.login {
+	height: 20px;
+}
+#headerContainer div.row div.tweleve.columns.nav {
+	float: left;
+	width: 100%!important ;
+}
+}

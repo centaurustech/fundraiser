@@ -9,32 +9,46 @@ $(document).ready(function(){
 
 	$(".close_modal_button").on('click',function(){
 		hide_popup_wrapper();
-		var validator
+		var validator;
 		
 		validator = $("#login_form").validate();
 		validator.resetForm();
 		validator = $("#register_form").validate();
 		validator.resetForm();
 	});
+
+	$('form input').keypress(function (event) {
+        if (event.which == '13') {
+            event.preventDefault();
+        }
+    });
+
+    $("#auth_wrapper a.tab_switcher").on('click',function(event){
+		$("#auth_wrapper .tabs dd.active").removeClass('active').siblings().addClass('active');
+		$("#auth_wrapper ul.tabs-content > li").removeClass('active');
+		$("#" + $(this).attr('tab')).addClass('active');
+	});
 });
 
 function login(){
-	//console.log('login');
-	//console.log($("#login_form"));
-	$("#login_form").validate({
+	$("#login_form").form_validate({
 		rules: {
-			login_form_email: {required: true,email: true}
-			,login_form_password: {required: true}
-		},
-		messages: {
-			login_form_email: "Please enter a valid email address"
-			,login_form_password: "Please enter password"
-		},
-		submitHandler: function(form){
+			email: {
+				required: { value: true, message: "Please enter your email" }
+				, email: { value: true, message: "Please enter a valid email address" }
+			}
+			,password: {
+				required: { value: true, message: "Please enter password" }
+			}
+		}
+		,valid_element_class: "valid"
+		,valid_form_class: "form_valid"
+		,onValid: function(form){
+			console.log($(form).serialize());
 			$.ajax({
 				url: "/auth/login"
 				,type: "post"
-				,data: $(form).serialize()
+				,data: $("#login_form").serialize()
 				,success: function(data){
 					console.log(data);
 					if(data.error !== true){
@@ -43,28 +57,124 @@ function login(){
 				}
 			});
 		}
+		,invalid_element_class: "invalid"
+		,invalid_form_class: "form_invalid"
+		,onInvalid: function(form){
+			console.log('fail');
+		}
+		,show_message: true // если false, то нижние значения не имеют смысла
+		,message_popup: false // false - тэг сообщения показывать рядом с элементом; true - показывать сообщение как всплывающую подсказку
+		,message_position: "right" // поиция блока сообщения, относительно элемента. может принимать значения: top | right | bottom | left
+		,message_tag: "div" // имя тега хрянящего сообщение об ошибке
+		,message_tad_class: "error_message" // класс тега хрянящего сообщение об ошибке
 	});
-	//console.log('login_end');
+
+
+	// $("#login_form").validate({
+	// 	rules: {
+	// 		login_form_email: {required: true,email: true}
+	// 		,login_form_password: {required: true}
+	// 	},
+	// 	messages: {
+	// 		login_form_email: "Please enter a valid email address"
+	// 		,login_form_password: "Please enter password"
+	// 	},
+	// 	submitHandler: function(form){
+	// if($("#login_form #login_form_email").hasClass('required')){
+	// 	if($("#login_form #login_form_email").val() == '' || !validateEmail($("#login_form #login_form_email").val())){
+	// 		$("#login_form #login_form_email").addClass('invalid');
+	// 		valid == false;
+	// 	}else{
+	// 		$("#login_form #login_form_email").removeClass('invalid');
+	// 	}
+	// }
+
+	// validate_form($("#login_form"));
+
+	// if(valid){
+
+	// }
+	// 	}
+	// });
+}
+
+function validate_form(form){
+	$.each($(form).find("input, select, textarea"), function(i,v) {
+		if($(v).attr('it')){
+			var it = $(v).attr('it');
+			if(it == 'text'){
+
+			}else if(it == 'password'){
+
+			}else if(it == 'email'){
+
+			}else if(it == 'checkbox'){
+
+			}else{
+
+			}
+			console.log(v.tagName);
+			console.log($(v));
+			console.log($(v).val());
+			console.log($(v).attr('it'));
+		}
+	});
+}
+
+function get_type(element){
+	if(v.tagName == 'text'){
+		return $(v).val();
+	}else if(v.tagName == 'textarea'){
+		return v.tagName;
+	}else if(v.tagName == 'select'){
+		return v.tagName;
+	}else if(v.tagName == 'text'){
+		return v.tagName;
+	}else if(v.tagName == 'text'){
+
+	}else if(v.tagName == 'text'){
+
+	}
+}
+
+function validateEmail(email) {
+	var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+	if( !emailReg.test( email ) ) {
+		return false;
+	} else {
+		return true;
+	}
 }
 
 function register(){
-	console.log('register');
-	$("#register_form").validate({
+	$("#register_form").form_validate({
 		rules: {
-			register_form_firstname: {required: true,minlength: 2}
-			,register_form_lastname: {required: true,minlength: 2}
-			,register_form_email: {required: true,email: true}
-			,register_form_password: {required: true}
-			,register_form_confirmpassword: {required: true, equalTo:"#register_form_password"}
-		},
-		messages: {
-			register_form_firstname: { required: "Please enter your firstname", minlength: "Your firstname must consist of at least 2 characters" }
-			,register_form_lastname: { required: "Please enter your lastname",	minlength: "Your lastname must consist of at least 2 characters" }
-			,register_form_email: "Please enter a valid email address"
-			,register_form_password: "Please enter password"
-			,register_form_confirmpassword: "please enter same password"
-		},
-		submitHandler: function(form){
+			firstname: {
+				required: { value: true, message: "Please enter your firstname" }
+				, minlength: { value: 2, message: "Your firstname must consist of at least 2 characters" }
+			}
+			,lastname: {
+				required: { value: true, message: "Please enter your lastname" }
+				, minlength: { value: 2, message: "Your lastname must consist of at least 2 characters" }
+			}
+			,email: {
+				required: { value: true, message: "Please enter your email" }
+				, email: { value: true, message: "Please enter a valid email address" }
+			}
+			,password: {
+				required: { value: true, message: "Please enter password" }
+			}
+			,confirmpassword: {
+				equalTo: { value: "password", message: "Please enter same password" }
+			}
+			,agree: {
+				required: { value: true }
+			}
+		}
+		,valid_element_class: "valid"
+		,valid_form_class: "form_valid"
+		,onValid: function(form){
+			console.log($(form).serialize());
 			$.ajax({
 				url: "/auth/register"
 				,type: "post"
@@ -77,7 +187,25 @@ function register(){
 				}
 			});
 		}
+		,invalid_element_class: "invalid"
+		,invalid_form_class: "form_invalid"
+		,onInvalid: function(form){
+			console.log('fail');
+		}
+		,show_message: true // если false, то нижние значения не имеют смысла
+		,message_popup: false // false - тэг сообщения показывать рядом с элементом; true - показывать сообщение как всплывающую подсказку
+		,message_position: "right" // поиция блока сообщения, относительно элемента. может принимать значения: top | right | bottom | left
+		,message_tag: "div" // имя тега хрянящего сообщение об ошибке
+		,message_tad_class: "error_message" // класс тега хрянящего сообщение об ошибке
 	});
+}
+
+function show_login_tab(){
+
+}
+
+function show_register_tab(){
+	
 }
 
 
@@ -119,7 +247,7 @@ function fb_login(){
 	if(top < 0) top = 0;
 	if(left < 0) left = 0;
 	var params = "width=" + w + ",height=" + h + ",resizable=yes,scrollbars=yes,status=yes,left=" + left + ",top=" + top;
-	fbpopup = window.open("<?=base_url()?>auth/facebook_login", "Facebook", params);
+	fbpopup = window.open(BASE_URL + "auth/facebook_login", "Facebook", params);
 }
 
 function fb_logout(){
@@ -128,7 +256,7 @@ function fb_logout(){
 	if(top < 0) top = 0;
 	if(left < 0) left = 0;
 	var params = "width=" + w + ",height=" + h + ",resizable=yes,scrollbars=yes,status=yes,left=" + left + ",top=" + top;
-	fbpopup = window.open("<?=$facebook_logout_url?>", "Facebook", params);
+	fbpopup = window.open(FACEBOOK_LOGOUT_URL, "Facebook", params);
 }
 
 function fb_after_login(data){

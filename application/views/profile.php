@@ -18,7 +18,7 @@
 				</div>
 			<?php } ?>
 			<p>Your account is not activated yet. You were sent an email with an activation code. If you have not received an email, click the <a href="/auth/email/activation/resend">link</a> to resend the activation data.</p>
-			<a href="<?=$data['account']['activation_url']?>"></a>
+			
 
 		<?php } ?>
 

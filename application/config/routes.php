@@ -54,6 +54,9 @@ $route['auth/(.*)'] 	= "auth/$1";
 $route['ad']        = "ad";
 $route['ad/(.*)'] 	= "ad/$1";
 
+$route['pay'] 	= "pay";
+$route['pay/(.*)'] 	= "pay/$1";
+
 $route['(.*)'] 	= "home/$1";
 
 

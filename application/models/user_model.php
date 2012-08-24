@@ -56,7 +56,7 @@ class User_model extends CI_Model
 			}else{
 				$user['password'] = false;
 			}
-			$this->session->set_userdata('user',$user);
+			//$this->session->set_userdata('user',$user);
 			return $user;
 		}else{
 			return false;

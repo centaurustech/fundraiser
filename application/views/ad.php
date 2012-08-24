@@ -1,5 +1,6 @@
 <?php $this->load->view('header',$data); ?>
 <div id="content">
+    <p>ADS</p>
     <div id="ads">
         <?php foreach($ad as $value): ?>
             <div id="ad_<?=$value['id']?>" class="ad">

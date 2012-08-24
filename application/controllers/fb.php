@@ -83,8 +83,8 @@ class Fb extends CI_Controller {
 		$user = $this->user->register($firstname,$lastname,$email,$password);
 		if($user){
 			$this->session->set_userdata('user',$user);
-			$activation_url = send_activation_email($user);
-			result_as_json('Registration complete. Please check email to activate account. ' . $activation_url);
+			//$activation_url = send_activation_email($user);
+			result_as_json('Registration complete. Please check email to activate account.');
 		}else{
 			$this->session->unset_userdata('user');
 			error_as_json('Registration error, please check all fields.' . json_encode($user));
