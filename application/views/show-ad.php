@@ -1,17 +1,29 @@
 <?php $this->load->view('header',$data); ?>
 <div id="content">
+    <?php if($transaction): ?>
+        <?php if($transaction['error']): ?>
+            <h2>Error!</h2>
+            <h3>We're sorry, but we can't process your order at this time due to the following error:</h3>
+            <p><?=$transaction['response_reason_text']?></p>
+        <?php else: ?>
+            <h2>Thank You</h2>
+            <p>Your transaction ID:</p>
+            <span><?=$transaction['transaction_id']?></span>
+        <?php endif; ?>
+    <?php endif ?>
     <?php if($ad): ?>
-    <?php foreach($ad as $value) ?>
-    <div id="ad-meaning"> 
-        <?=$value['meaning']?>
-    </div>
-    <div id="ad-progress">
-        <p>Raised: <?=$value['still_need_raise']?></p>
-        <p>GOAL: <?=$value['total_cost']?></p>
-        <p>Ends <?=$value['date']?></p>
-    </div>
-    <?php endif; ?>
-    <input id="autorizenet" type="image" src="/images/purchase.png"/>
+        <?php foreach($ad as $value): ?>
+            <div id="ad-meaning"> 
+                <?=$value['meaning']?>
+            </div>
+            <div id="ad-progress">
+                <p>Raised: <?=$value['still_need_raise']?></p>
+                <p>GOAL: <?=$value['total_cost']?></p>
+                <p>Ends <?=$value['date']?></p>
+            </div>
+        <?php endforeach; ?>
+    <?php if($ad['0']['published']): ?>
+        <input id="autorizenet" type="image" src="/images/purchase.png"/>
     <div id="popup-gift">
         <form method="post" action="/transaction/gift" id="form">
             <input type="hidden" name="ad_id" value="<?= $ad['0']['id'] ?>"/>
@@ -77,8 +89,6 @@
             <input type="submit" value="Submit Gift"/>
         </form>
     </div>
-</div>
-<?php $this->load->view('footer',$data); ?>
 <script type="text/javascript">
     $(document).ready(function(){
         $('#autorizenet').click(function(){
@@ -101,7 +111,7 @@
             var error = false;
             var re_amount = /^[0-9]+$/
             var re_card_num = /^[0-9]{13,20}$/;
-            var re_exp_date = /^(0[1-9])|(1[0-2])\/([0-3][0-9])$/;
+            var re_exp_date = /^(0[1-9])|(1[0-2])\/([0-9]{2})$/;
             var re_card_code = /^[0-9]{3}$/;
             if (! re_amount.test($('#amount').val())) {
                 $('#amount + .ad-error').text('Please enter a valid amount.')
@@ -129,3 +139,7 @@
         });
     });
 </script>
+<?php endif; ?>
+</div>
+<?php endif; ?>
+<?php $this->load->view('footer',$data); ?>

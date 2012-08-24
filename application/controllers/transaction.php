@@ -27,12 +27,12 @@ class Transaction extends CI_Controller {
                     $this->load->model('ad_model','ad');
                     $ad['0']['still_need_raise'] += $this->input->post('amount');
                     $this->ad->updated($ad['0']['id'], array('still_need_raise' => $ad['0']['still_need_raise']));
+                    
+                    //$this->sendMail($ad['0']['id']);
                 }
-                $this->load->view('transaction', array(
-                    'data' => array('title' => 'transaction'), 
-                    'transaction' => $response,
-                    'ad_id' => $this->input->post('ad_id')
-                ));
+                $this->session->set_userdata('transaction', $response);
+                $this->load->helper('url');
+                redirect("/ad/show/{$ad['0']['id']}");
             } else {
                 die('error');
                 redirect('/ad', 'refresh');
@@ -74,11 +74,21 @@ class Transaction extends CI_Controller {
         } else {
           return array(
               'error' => true, 
-              'response_code' => $response->response_code, 
-              'response_reason_code' => $response->response_reason_code, 
               'response_reason_text' => $response->response_reason_text
           );
         }
+    }
+    
+    private function sendMail($adId) {
+        $this->load->library('email');
+        
+        $this->email->from('your@your-site.com', 'Your Name');
+        $this->email->to('tovarish89@gmail.com');
+
+        $this->email->subject('contribute');
+        $this->email->message('Тестирование класса отправки сообщений');
+
+        $this->email->send();
     }
     
 }
