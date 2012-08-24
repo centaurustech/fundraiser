@@ -5,13 +5,13 @@ class Ad extends CI_Controller {
     function __construct(){
 		parent::__construct();
         $this->load->helper(array('url','html'));
+        echo link_tag('css/ad.css');
 		error_reporting(E_ALL);
 	} 
     
     public function index(){
         $this->load->model('ad_model','ad');
         $data = $this->ad->getAd(array('published' => '1'));
-        echo link_tag('css/ad.css');
         $this->load->view('ad',array('data' => array('title' => 'Fundraisers'), 'ad' => $data));
     }
     
@@ -20,7 +20,6 @@ class Ad extends CI_Controller {
             $this->load->model('ad_model','ad');
             $userData = $this->session->userdata('user');
             $data = $this->ad->getAd(array('user_id' => $userData['id']));
-            echo link_tag('css/ad.css');
             $this->load->view('ad',array('data' => array('title' => 'Fundraisers'), 'ad' => $data));
         }
     }
@@ -47,7 +46,6 @@ class Ad extends CI_Controller {
             $data['fundraisers'] = $this->fundraisers->getFundraisers();
             $data['data']['title'] = 'Create ad';
             echo link_tag('css/jquery-ui-1.8.23.custom.css');
-            echo link_tag('css/ad.css');
             $this->load->view('header', array('data' => array('title' => 'create add')));
             $this->load->view('templates/create-ad', $data);
         } else {
@@ -82,7 +80,7 @@ class Ad extends CI_Controller {
                         $data['published'] = '0';
                     }
                     $userId = $userData['id'];
-                    $this->ad->updated($id, $userId, $data);
+                    $this->ad->updated($id, $data, $userId);
                     redirect('/ad/userAd', 'refresh');
                 }
             }
@@ -97,7 +95,6 @@ class Ad extends CI_Controller {
                 }
             }
             echo link_tag('css/jquery-ui-1.8.23.custom.css');
-            echo link_tag('css/ad.css');
             $this->load->view('header', array('data' => array('title' => 'create add')));
             $this->load->view('templates/create-ad', $data);
         } else {

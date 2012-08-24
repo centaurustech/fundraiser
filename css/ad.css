@@ -20,3 +20,25 @@
     font-size: 12px;
     padding: 0 0 0 7px;
 }
+#popup-gift {
+    display: none;
+    position: absolute;
+    border: 2px solid #000;
+    left: 100px;
+    top: 100px;
+    background-color: #e78f08;
+}
+
+#popup-gift .card-data {
+    margin-left: 20px;
+}
+
+#popup-gift .card-data label {
+    display: block;
+     margin: 8px 0 2px 0;
+}
+
+#popup-gift #credit-card,
+#popup-gift #eCheck {
+    display: none;
+}

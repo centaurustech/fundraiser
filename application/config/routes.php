@@ -53,6 +53,7 @@ $route['profile/(.*)'] 	= "profile/$1";
 $route['auth/(.*)'] 	= "auth/$1";
 $route['ad']        = "ad";
 $route['ad/(.*)'] 	= "ad/$1";
+$route['transaction/(.*)'] 	= "transaction/$1";
 
 $route['(.*)'] 	= "home/$1";
 

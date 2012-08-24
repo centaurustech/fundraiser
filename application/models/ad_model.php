@@ -45,9 +45,11 @@ class Ad_model extends CI_Model
         $this->db->delete($this->_name); 
     }
     
-    function updated($id, $userId, $data) {
+    function updated($id, $data, $userId = null) {
         $this->db->where('id', $id);
-        $this->db->where('user_id', $userId);
+        if($userId) {
+            $this->db->where('user_id', $userId);
+        }
         $this->db->update($this->_name, $data); 
     }
 
