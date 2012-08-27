@@ -19,7 +19,11 @@ class Ad extends CI_Controller {
         if ($this->session->userdata('user')) {
             $this->load->model('ad_model','ad');
             $userData = $this->session->userdata('user');
-            $data = $this->ad->getAd(array('user_id' => $userData['id']));
+            if ($userData['active']) {
+                $data = $this->ad->getAd(array('user_id' => $userData['id']));
+            } else {
+                redirect('/profile');
+            }
             $this->load->view('ad',array('data' => array('title' => 'Fundraisers'), 'ad' => $data));
         }
     }
@@ -29,18 +33,21 @@ class Ad extends CI_Controller {
      */
     public function create($published = false){
         if($this->session->userdata('user')){
+            $userData = $this->session->userdata('user');
+            if (! $userData['active']) {
+                redirect('/profile');
+            }
             $this->load->model('fundraisers_model','fundraisers');
             $this->load->model('ad_model','ad');
             if ($this->input->post()){
                 if ($this->validate($this->input->post(), $published)) {
                     $data = $this->input->post();
-                    $userData = $this->session->userdata('user');
                     if ($published) {
                         $data['published'] = '1';
                     }
                     $data['user_id'] = $userData['id'];
                     $this->ad->add($data);
-                    redirect('/ad/userAd', 'refresh');
+                    redirect('/ad/userAd');
                 }
             }
             $data['fundraisers'] = $this->fundraisers->getFundraisers();
@@ -75,12 +82,15 @@ class Ad extends CI_Controller {
 
     public function edit($id = null, $published = false){
         if($this->session->userdata('user') && $id){
+            $userData = $this->session->userdata('user');
+            if (! $userData['active']) {
+                redirect('/profile');
+            }
             $this->load->model('fundraisers_model','fundraisers');
             $this->load->model('ad_model','ad');
             if ($this->input->post()){
                 if ($this->validate($this->input->post(), $published)) {
                     $data = $this->input->post();
-                    $userData = $this->session->userdata('user');
                     if ($published) {
                         $data['published'] = '1';
                     } else {
@@ -88,13 +98,13 @@ class Ad extends CI_Controller {
                     }
                     $userId = $userData['id'];
                     $this->ad->updated($id, $data, $userId);
-                    redirect('/ad/userAd', 'refresh');
+                    redirect('/ad/userAd');
                 }
             }
             $data['fundraisers'] = $this->fundraisers->getFundraisers();
-            $data['ad'] = $this->ad->getAd(array('id' => $id));
+            $data['ad'] = $this->ad->getAd(array('id' => $id, 'user_id' => $userData['id']));
             if (! $data['ad']) {
-                redirect('/ad/userAd', 'refresh');
+                redirect('/ad/userAd');
             }
             foreach ($data['ad'] as $values) {
                 foreach($values as $key => $value) {
@@ -102,20 +112,23 @@ class Ad extends CI_Controller {
                 }
             }
             echo link_tag('css/jquery-ui-1.8.23.custom.css');
-            $this->load->view('header', array('data' => array('title' => 'create add')));
+            $data['data']['title'] = 'create add';
             $this->load->view('templates/create-ad', $data);
         } else {
-            redirect('/ad', 'refresh');
+            redirect('/ad');
         }
     }
     
     public function delete($id){
         if($this->session->userdata('user')){
-            $this->load->model('ad_model','ad');
             $userData = $this->session->userdata('user');
+            if (! $userData['active']) {
+                redirect('/profile');
+            }
+            $this->load->model('ad_model','ad');
             $userId = $userData['id'];
             $this->ad->delete($id, $userId);
-            redirect('/ad/userAd', 'refresh');
+            redirect('/ad/userAd');
         }
     }
     
