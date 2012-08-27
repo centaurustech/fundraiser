@@ -20,7 +20,7 @@ class User_model extends CI_Model
 		if(!$email){
 			return false;
 		}
-		return $this->db->get_where('users',array('email'=>$email))->num_rows() == 1;
+		return $this->db->get_where('users',array('email'=>$email,'password != '=>''))->num_rows() == 1;
 	}
 
 	function get_user($email=null,$password=null){
@@ -36,7 +36,7 @@ class User_model extends CI_Model
 				}else{
 					$fresh_user['password'] = false;
 				}
-				$this->session->set_userdata('user',$fresh_user);
+				//$this->session->set_userdata('user',$fresh_user);
 				return $fresh_user;
 			}
 			return false;

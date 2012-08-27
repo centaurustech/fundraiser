@@ -1,4 +1,5 @@
 <?php $this->load->view('header', $data); ?>
+
 <script type="text/javascript" src="/js/jquery-ui-1.8.23.custom.min.js"></script>
 <div id="create-ad">
     <form method="post" id="form" action="/ad/create/published" novalidate="novalidate">
@@ -102,4 +103,5 @@
         
     });
 </script>
+
 <?php $this->load->view('footer', $data); ?>

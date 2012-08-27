@@ -1,5 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
 function json($data){
 	$CI =& get_instance();
 	$CI->output->set_header("Content-Type: application/json");
@@ -66,24 +67,22 @@ function result($id = 0){
 }
 
 function send_activation_email($user) {
-	error_reporting(E_ALL);
-	$this->load->library('email');
+	$CI =& get_instance();
+	//error_reporting(E_ALL);
+	$CI->load->library('email');
 	//v($user['email']);
 
 	//var_dump($this->email);
 
-	// $this->email->from('your@example.com', 'Your Name');
-	// $this->email->to($user['email']); 
-	// $this->email->subject('Account activation');
+	$CI->email->from('your@example.com', 'Your Name');
+	$CI->email->to($user['email']); 
+	$CI->email->subject('Account activation');
 
-	// //$activation_url = base_url() . "auth/email/activation?code=" . $user['activation_code'];
-	// $activation_url = "auth/email/activation?code=" . $user['activation_code'];
-	
-	// $this->email->message($activation_url);	
+	$activation_url = base_url() . "auth/email/activation?code=" . $user['activation_code'];
 
-	//return $this->email;
+	$CI->email->message($activation_url);
 
-	//return $this->email->send();
+	return $CI->email->send();
 	//return base_url() . "auth/email/activation?code=" . $user['activation_code'];
 }
 

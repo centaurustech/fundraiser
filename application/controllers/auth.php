@@ -79,7 +79,10 @@ class Auth extends CI_Controller {
 	public function login_facebook(){
 		$this->load->model('User_model','user');
 		if($this->input->get('token')){
-			$this->session->set_userdata('user',$this->user->get_facebook_user($this->input->get('token')));
+			$user = $this->user->get_facebook_user($this->input->get('token'));
+			if($user['password']){
+				$this->session->set_userdata('user',$user);
+			}
 		}else{
 			$this->user->get_user();
 		}
@@ -113,9 +116,8 @@ class Auth extends CI_Controller {
 			$user = $this->user->register($this->input->post("firstname",true),$this->input->post("lastname",true),$this->input->post("email",true),$this->input->post("password"));
 
 			if($user){
-				$this->send_email($user);
+				send_activation_email($user);
 				$this->session->set_userdata('user',$user);
-				//$activation_url = send_activation_email($user);
 				result_as_json('Registration complete. Please check email to activate account.');
 			}else{
 				$this->session->unset_userdata('user');
@@ -137,12 +139,9 @@ class Auth extends CI_Controller {
 
 		if($this->input->get('error')){
 			$data = array('error'=>true,'action'=>'login','message'=>$this->input->get('error_description'));
-			//var_dump($data);
-
 			$this->load->view('facebook_callback',array("data"=>$data));	
 			exit;	
 		}
-		//die();
 
 		$eat = $this->richfacebook->getExtendedAccessToken();
 		// if extended access token error
@@ -177,7 +176,7 @@ class Auth extends CI_Controller {
 		$user = $this->user->get_facebook_user($data['facebook_access_token']);
 		if(!$user){
 			$user = $this->user->register_facebook($data["firstname"],$data["lastname"],$data["email"],$data['facebook_access_token'],$data['avatar']);
-			$this->send_email($user);
+			//send_activation_email($user);
 		}
 
 		$user['error'] = false;
@@ -236,8 +235,6 @@ class Auth extends CI_Controller {
 			case 'activation':
 				if(array_key_exists(4,$segments)){
 					switch($segments[4]){
-
-
 						case 'success': // email activatio complete
 							redirect('profile?code='.$this->input->get('code'));
 							break;
@@ -249,9 +246,8 @@ class Auth extends CI_Controller {
 							if(!$this->user->get_user()){
 								redirect('/');
 							}else{
-								//var_dump($this->user->get_user());
-								v(send_activation_email($this->user->get_user()));
-								//redirect('/profile?code=1298');
+								send_activation_email($this->user->get_user());
+								redirect('/profile?code=1298');
 							}
 							break;
 					}
@@ -286,7 +282,7 @@ class Auth extends CI_Controller {
 		$user = $this->user->register($firstname,$lastname,$email,$password);
 		if($user){
 			$this->session->set_userdata('user',$user);
-			$activation_url = send_activation_email($user);
+			//$activation_url = send_activation_email($user);
 			result_as_json('Registration complete. Please check email to activate account. ' . $activation_url);
 		}else{
 			$this->session->unset_userdata('user');
@@ -340,17 +336,17 @@ class Auth extends CI_Controller {
 
 
 	private function send_email($user){
-		$this->load->library('email');
+		// $this->load->library('email');
 
-		$this->email->from('your@example.com', 'Your Name');
-		$this->email->to($user['email']); 
-		// //$this->email->cc('test230977@gmail.com'); 
-		// //$this->email->bcc('them@their-example.com'); 
+		// $this->email->from('your@example.com', 'Your Name');
+		// $this->email->to($user['email']); 
+		// // //$this->email->cc('test230977@gmail.com'); 
+		// // //$this->email->bcc('them@their-example.com'); 
 
-		$this->email->subject('Account activation');
-		$this->email->message(base_url() . "auth/email/activation?code=" . $user['activation_code']);	
+		// $this->email->subject('Account activation');
+		// $this->email->message(base_url() . "auth/email/activation?code=" . $user['activation_code']);	
 
-		$res = $this->email->send();
+		// $res = $this->email->send();
 	}
 
 }

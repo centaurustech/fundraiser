@@ -201,11 +201,19 @@ function register(){
 }
 
 function show_login_tab(){
+	$("#auth_wrapper dl.tabs > dd.active").removeClass('active');
+	$("#auth_wrapper dl.tabs > dd > a.tab_switcher[tab='loginTab']").parent().addClass('active');
 
+	$("#auth_wrapper ul.tabs-content > li").removeClass('active');
+	$("#loginTab").addClass('active');
 }
 
 function show_register_tab(){
-	
+	$("#auth_wrapper dl.tabs > dd.active").removeClass('active');
+	$("#auth_wrapper dl.tabs > dd > a.tab_switcher[tab='registerTab']").parent().addClass('active');
+
+	$("#auth_wrapper ul.tabs-content > li").removeClass('active');
+	$("#registerTab").addClass('active');
 }
 
 
@@ -214,8 +222,8 @@ function show_login_form(){
 	$("#login_form_wrapper").show();
 	//$("#auth_popup_wrapper").css('margin-top','-'+$("#auth_popup_wrapper").outerHeight()/2+'px');
 	$("#auth_popup_wrapper").show();
-	$(".tabs .tab").removeClass('selected');
-	$(".login_tab").addClass('selected');
+
+	show_login_tab();
 }
 
 function show_register_form(){
@@ -223,8 +231,8 @@ function show_register_form(){
 	$("#register_form_wrapper").show();
 	//$("#auth_popup_wrapper").css('margin-top','-'+$("#auth_popup_wrapper").outerHeight()/2+'px');
 	$("#auth_popup_wrapper").show();
-	$(".tabs .tab").removeClass('selected');
-	$(".register_tab").addClass('selected');
+
+	show_register_tab();
 }
 
 function hide_popup_wrapper(){

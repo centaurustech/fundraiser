@@ -84,137 +84,144 @@
 		}
 	</script>
 
-		<pre id="session" class="debug_block" style="display:none;"><strong>SESSION:</strong><br/><?php print_r($this->session->userdata); ?></pre>
-		<pre id="cookies" class="debug_block" style="display:none;"><strong>COOKIE:</strong><br/><?php print_r($_COOKIE); ?></pre>
+	<pre id="session" class="debug_block" style="display:none;"><strong>SESSION:</strong><br/><?php print_r($this->session->userdata); ?></pre>
+	<pre id="cookies" class="debug_block" style="display:none;"><strong>COOKIE:</strong><br/><?php print_r($_COOKIE); ?></pre>
 
-<!-- header section -->
-<div id="headerContainer">
-	<div class="row">
+	<!-- header section -->
+	<div id="headerContainer">
+		<div class="row">
 
-		<div class="logo"></div>
+			<div class="logo"></div>
 
-		<?php if($this->session->userdata('user')){ ?>
-			<div class="login"><a id="logout_button" class="small button" href="/auth/logout">Logout</a></div>
-		<?php }else{ ?>
-			<div class="login"><a class="small button" href="#" data-reveal-id="auth_wrapper" 	>Register</a></div>
-			<div class="login"><a id="" class="small button" href="#" data-reveal-id="auth_wrapper" >Login</a></div>
-		<?php } ?>
+			<?php if($this->session->userdata('user')){ ?>
+			<?php } ?>
 
-		<div id="auth_wrapper" class="reveal-modal [expand]">
-			
-			<h3>Create Your Free STAfund Account</h3>
-			
-			<div class="fbl">
-				<p>Get going quicker; connect with Facebook:</p>
-				<img src="/images/main/fb-button.png" alt="Login" onclick="fb_login()">
-			</div>
+			<?php if($this->session->userdata('user')){ ?>
+				<div class="login"><a id="logout_button" class="small button" href="/auth/logout">Logout</a></div>
+				<div class="login"><a class="small button" href="/profile">Profile</a></div>
+			<?php }else{ ?>
+				<div class="login"><a class="small button" href="#" data-reveal-id="auth_wrapper" onclick="show_register_tab()">Register</a></div>
+				<div class="login"><a class="small button" href="#" data-reveal-id="auth_wrapper" onclick="show_login_tab()" >Login</a></div>
+			<?php } ?>
 
-			<p>or, complete the information below:</p>
+			<div id="auth_wrapper" class="reveal-modal [expand]">
+				
+				<h3>Create Your Free STAfund Account</h3>
+				
+				<div class="fbl">
+					<p>Get going quicker; connect with Facebook:</p>
+					<img src="/images/main/fb-button.png" alt="Login" onclick="fb_login()">
+				</div>
+
+				<p>or, complete the information below:</p>
 
 
-			<div class="row">
-				<dl class="tabs">
-					<dd class="active"><a class="tab_switcher" tab="loginTab" href="javascript:">Login</a></dd>
-					<dd><a class="tab_switcher" tab="registerTab" href="javascript:">Register</a></dd>
-				</dl>
+				<div class="row">
+					<dl class="tabs">
+						<dd class="active"><a class="tab_switcher" tab="loginTab" href="javascript:">Login</a></dd>
+						<dd><a class="tab_switcher" tab="registerTab" href="javascript:">Register</a></dd>
+					</dl>
 
-				<ul class="tabs-content">
-					<li class="active" id="loginTab">
-						<form class="custom" method="post" action id="login_form" novalidate="novalidate">
-							<div class="row">
-								<div class="six columns">
-									<label for="login_form_email">Email Address</label>
-									<input id="login_form_email" name="email" class="required" type="text" it="email" />
+					<ul class="tabs-content">
+						<li class="active" id="loginTab">
+							<form class="custom" method="post" action id="login_form" novalidate="novalidate">
+								<div class="row">
+									<div class="six columns">
+										<label for="login_form_email">Email Address</label>
+										<input id="login_form_email" name="email" class="required" type="text" it="email" />
+									</div>
+									
+									 <div class="six columns">
+										<label>Password</label>
+										<input id="login_form_password" name="password" class="required" type="password" placeholder="" it="password"/>
+									</div>
 								</div>
+							</form>
 								
-								 <div class="six columns">
-									<label>Password</label>
-									<input id="login_form_password" name="password" class="required" type="password" placeholder="" it="password"/>
+								<div class="row last">
+									<div class="six columns">
+										<button class='submit_button large success button' onclick="login()" >Login</button>
+										<!-- <input class="large success button" name="Submit" type="button" value="Save and Continue"> -->
+									</div>
+									<div class="six columns btm">
+										<a class="tab_switcher" tab="registerTab" href="javascript:">I Have No Account</a>
+									</div>
 								</div>
-							</div>
-						</form>
-							
-							<div class="row last">
-								<div class="six columns">
-									<button class='submit_button large success button' onclick="login()" >Login</button>
-									<!-- <input class="large success button" name="Submit" type="button" value="Save and Continue"> -->
-								</div>
-								<div class="six columns btm">
-									<a class="tab_switcher" tab="registerTab" href="javascript:">I Have No Account</a>
-								</div>
-							</div>
-					</li>
+						</li>
 
-					<li id="registerTab">
-						<form class="custom" method="post" action id="register_form" novalidate="novalidate">
-							<div class="row">
-								<div class="six columns">
-									<label>First Name</label>
-									<input id="register_form_firstname" name="firstname" class="required" type="text"  it="text"/>
+						<li id="registerTab">
+							<form class="custom" method="post" action id="register_form" novalidate="novalidate">
+								<div class="row">
+									<div class="six columns">
+										<label>First Name</label>
+										<input id="register_form_firstname" name="firstname" class="required" type="text"  it="text"/>
+									</div>
+									 <div class="six columns">
+										<label>Last Name</label>
+										<input id="register_form_lastname" name="lastname" class="required" type="text"  it="text"/>
+									</div>
 								</div>
-								 <div class="six columns">
-									<label>Last Name</label>
-									<input id="register_form_lastname" name="lastname" class="required" type="text"  it="text"/>
+								<div class="row">
+									<div class="twelve columns">
+										<label>Email Address</label>
+										<input id="register_form_email" name="email" class="required" type="text"  it="text"/>
+									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="twelve columns">
-									<label>Email Address</label>
-									<input id="register_form_email" name="email" class="required" type="text"  it="text"/>
+								<div class="row">
+									<div class="six columns">
+										<label>Create a Password</label>
+										<input id="register_form_password" name="password" class="required" type="password" placeholder="" it="password"/>
+									</div>
+							 		<div class="six columns">
+										<label>Confirm Password</label>
+										<input id="register_form_confirmpassword" name="confirmpassword" class="required" type="password" placeholder="" it="password"/>
+									</div>
 								</div>
-							</div>
-							<div class="row">
-								<div class="six columns">
-									<label>Create a Password</label>
-									<input id="register_form_password" name="password" class="required" type="password" placeholder="" it="password"/>
+								<div class="row">
+									<div class="twelve columns">
+										<label for="register_form_agree"><input name="agree" id="register_form_agree" type="checkbox" />By creating an account, I agree to STAfund's </label>
+								 		<a href="#">Terms of Use</a>
+								 	</div>
 								</div>
-						 		<div class="six columns">
-									<label>Confirm Password</label>
-									<input id="register_form_confirmpassword" name="confirmpassword" class="required" type="password" placeholder="" it="password"/>
-								</div>
-							</div>
-							<div class="row">
-								<div class="twelve columns">
-									<label for="register_form_agree"><input name="agree" id="register_form_agree" type="checkbox" />By creating an account, I agree to STAfund's </label>
-							 		<a href="#">Terms of Use</a>
-							 	</div>
-							</div>
-						</form>
+							</form>
 
-							<div class="row last">
-								<div class="six columns">
-									<button class='submit_button large success button' onclick="register()" >Save and Continue</button>
+								<div class="row last">
+									<div class="six columns">
+										<button class='submit_button large success button' onclick="register()" >Save and Continue</button>
+									</div>
+									<div class="six columns btm">
+										<a class="tab_switcher" tab="loginTab" href="javascript:">I Already Have an Account</a>
+									</div>
 								</div>
-								<div class="six columns btm">
-									<a class="tab_switcher" tab="loginTab" href="javascript:">I Already Have an Account</a>
-								</div>
-							</div>
-					</li>
-				</ul>
+						</li>
+					</ul>
+				</div>
+
+				
+				<a class="close-reveal-modal">×</a>
 			</div>
+				
+			<div id="header">
 
-			
-			<a class="close-reveal-modal">×</a>
-		</div>
-			
-		<div id="header">
+				<div class="tweleve columns nav">
+				
+					<ul class="nav-bar">
+						<li class="active"><a href="/">Home</a></li>
+		                <li><a href="/ad">Ads</a></li>
+						<?php if($this->session->userdata('user')){ ?>
+							<!-- <li><a href="/profile">Profile</a></li> -->
+			                <li><a href="/ad/create">Create Fundraiser</a></li>
+		                    <li><a href="/ad/userAd">My ads</a></li>
+						<?php } ?>
+						<li><a href="/">Features</a></li>
+						<li><a href="/">FAQs</a></li>
+						<li><a href="/">Give Funds</a></li>
+					</ul>
 
-			<div class="tweleve columns nav">
-			
-				<ul class="nav-bar">
-					<li class="active"><a href="/">Home</a></li>
-	                <li><a href="/ad">Ads</a></li>
-					<?php if($this->session->userdata('user')){ ?>
-						<li><a href="/profile">Profile</a></li>
-		                <li><a href="/ad/create">Create Fundraiser</a></li>
-	                    <li><a href="/ad/userAd">My ads</a></li>
-					<?php } ?>
-					<li><a href="/">Features</a></li>
-					<li><a href="/">FAQs</a></li>
-					<li><a href="/">Give Funds</a></li>
-				</ul>
-
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+
+	<!-- main section -->
+	<div class="centerWrapper">

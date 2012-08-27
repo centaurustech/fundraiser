@@ -1,3 +1,5 @@
+</div>
+
 <!-- footer section -->  
 
 <div class="footerWrapper">
@@ -94,7 +96,7 @@
 	
 	<!--<script type="text/javascript" src="/js/jquery.validate.min.js"></script>-->
 	<script type="text/javascript" src="/js/jquery-ui-1.8.23.custom.min.js"></script>
-	
+
 	<script type="text/javascript" src="/js/script.js"></script>
 	<script type="text/javascript" src="/js/jquery.form.validation.js"></script>
 
