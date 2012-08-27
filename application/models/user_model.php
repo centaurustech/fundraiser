@@ -25,7 +25,7 @@ class User_model extends CI_Model
 
 	function get_user($email=null,$password=null){
 		if($email || $password){
-			$this->db->select(array('password','email','firstname','lastname','avatar','facebook_access_token','activation_code','active'));
+			$this->db->select(array('id','password','email','firstname','lastname','avatar','facebook_access_token','activation_code','active'));
 			return $this->db->get_where('users',array('email'=>$email,'password'=>md5($password)))->row_array();
 		}else{
 			if($this->session->userdata('user')){
