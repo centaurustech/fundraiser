@@ -61,7 +61,13 @@ class Ad extends CI_Controller {
             if (! $data) {
                 redirect('/ad/userAd', 'refresh');
             }
-            $this->load->view('show-ad',array('data' => array('title' => 'Show'), 'ad' => $data));
+            $transaction = $this->session->userdata('transaction');
+            $this->session->unset_userdata('transaction');
+            $this->load->view('show-ad',array(
+                'data' => array('title' => 'Show'), 
+                'ad' => $data,
+                'transaction' => $transaction
+            ));
         } else {
             redirect('/ad', 'refresh');
         }
