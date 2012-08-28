@@ -9,12 +9,18 @@ class Ad extends CI_Controller {
 		error_reporting(E_ALL);
 	} 
     
+    /**
+     * list all ads
+     */
     public function index(){
         $this->load->model('ad_model','ad');
         $data = $this->ad->getAd(array('published' => '1'));
         $this->load->view('ad',array('data' => array('title' => 'Fundraisers'), 'ad' => $data));
     }
     
+    /**
+     * list user ads
+     */
     public function userAd(){
         if ($this->session->userdata('user')) {
             $this->load->model('ad_model','ad');
@@ -30,6 +36,9 @@ class Ad extends CI_Controller {
     
     /**
      * Create ad
+     * 
+     * if $publisher = false save ad but not publish else save and published
+     * @param bool $published
      */
     public function create($published = false){
         if($this->session->userdata('user')){
@@ -61,6 +70,11 @@ class Ad extends CI_Controller {
         }
     }
     
+    /**
+     * Displays the selected ad
+     * 
+     * @param integer $id 
+     */
     public function show($id = null){
         if ($id) {
             $this->load->model('ad_model','ad');
@@ -79,7 +93,15 @@ class Ad extends CI_Controller {
             redirect('/ad', 'refresh');
         }
     }
-
+    
+    /**
+     *edit ad
+     * 
+     * if $publisher = false save ad but not publish else save and published
+     * 
+     * @param integer $id
+     * @param bool $published 
+     */
     public function edit($id = null, $published = false){
         if($this->session->userdata('user') && $id){
             $userData = $this->session->userdata('user');
@@ -119,6 +141,11 @@ class Ad extends CI_Controller {
         }
     }
     
+    /**
+     *delete ad
+     * 
+     * @param integer $id 
+     */
     public function delete($id){
         if($this->session->userdata('user')){
             $userData = $this->session->userdata('user');

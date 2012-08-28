@@ -8,6 +8,9 @@ class Transaction extends CI_Controller {
 		error_reporting(E_ALL);
 	} 
     
+    /**
+     * 
+     */
     public function gift() {
         if ($this->input->post() && $this->validate($this->input->post())) {
             $this->load->model('ad_model','ad');
@@ -42,6 +45,12 @@ class Transaction extends CI_Controller {
         }
     }
     
+    /**
+     * validate post data
+     * 
+     * @param array $data
+     * @return bool 
+     */
     private function validate($data = null) {
         if (preg_match('/^[0-9]{13,20}$/', $data['card_num'])
             && preg_match('/^(0[1-9])|(1[0-2])\/([0-3][0-9])$/', $data['exp_date'])
@@ -54,6 +63,9 @@ class Transaction extends CI_Controller {
         }
     }
     
+    /**
+     * @return array
+     */
     private function processTransaction() {
         $this->config->load('transaction');
         $transaction = new AuthorizeNetAIM($this->config->item('authorizenet_api_login_id'), $this->config->item('authorizenet_transaction_key'));
